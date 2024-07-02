@@ -2,6 +2,10 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 const axios = require('axios'); // Importa a biblioteca axios para fazer requisições HTTP
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
+/**
+ * Pega os usuarios e retorna suas informacoes
+ * @returns users retorna o array de usuarios
+ */
 async function fetchStoredUsers() {
     try {
         // Define a classe 'usuario' no Parse
@@ -15,7 +19,7 @@ async function fetchStoredUsers() {
             id: result.get('ID'),
             nome: result.get('Nome')
         }));
-        return storedUsers; // Retorna o array de usuários armazenados
+        return storedUsers;
     } catch (error) {
         // Exibe um erro no console se ocorrer um problema ao buscar os usuários
         console.error('Erro ao buscar usuários armazenados:', error);
