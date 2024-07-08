@@ -2,6 +2,10 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 const axios = require('axios'); // Importa a biblioteca axios para fazer requisições HTTP
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
+/**
+ * Pega do Back4App os usuarios e retorna suas informacoes
+ * @returns um array de usuarios
+ */
 async function fetchStoredUsers() {
     try {
         // Define a classe 'usuario' no Parse

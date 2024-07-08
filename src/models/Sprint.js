@@ -2,6 +2,10 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 const axios = require('axios'); // Importa a biblioteca axios para fazer requisições HTTP
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
+/**
+ * Pega a Sprint do Back4app e retorna o nome da Sprint
+ * @returns 
+ */
 async function getStoredSprints() {
     // Define a classe 'sprint' no Parse
     const Sprint = Parse.Object.extend('sprint');
