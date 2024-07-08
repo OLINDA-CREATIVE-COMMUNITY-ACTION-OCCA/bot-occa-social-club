@@ -1,3 +1,6 @@
+
+// todo transformar essas duas funções em apenas uma que vai ter um compotamento diferente se tiver
+// , dentro assigner
 /**
  * Função para converter IDs de atribuidores em nomes de usuários
  * @param {*} assignerIds 
@@ -31,7 +34,7 @@ function getAssignerNames(assignerIds, storedUsers) {
  * @param {*} storedUsers 
  * @returns null se o nome do usuário não for encontrado nos usuários armazenados
  */
-function getAssignerIds(assignerNames, storedUsers) {
+function convertAssignerNameToId(assignerNames, storedUsers) {
     const ids = assignerNames.map(name => {
         const user = storedUsers.find(user => user.nome === name.trim());
         if (user) {
@@ -47,5 +50,5 @@ function getAssignerIds(assignerNames, storedUsers) {
 module.exports = { 
     convertAssignerIdsToNames,
     getAssignerNames,
-    getAssignerIds,
+    convertAssignerNameToId,
 };
