@@ -1,9 +1,12 @@
 # 🤖 OCCINHO - Bot do discord do OCCA Social Club
 O **OCCINHO** é um bot desenvolvido com o objetivo de acessar a API de EVA e obter informações sobre sprints, tarefas e comparar as informações com as armanezadas localmente.
 
+## 🤔 O que é EVA (Estrátegia Visual Ágil)?
+[**EVA**](https://evastrategy.com/) é uma plataforma de gestão agil utilizada no OCCA Social Club. O diferencial da plataforma é a utilização de Design Thinking e metodologias ágeis, o que aumenta significativamente a eficácia das equipes na resolução de problemas.
+
 ## 🤔 Como funciona?
 
-O **OCCINHO** funciona utilizando o [discord](https://discord.com) como interface para receber comandos e exibir as informações.
+O **OCCINHO** funciona utilizando o [discord](https://discord.com) como interface para receber comandos e exibir as informações. Ele automatiza a atribuição de pontos aos concluientes das tarefas.
 
 ### Lista de commandos
 - `ranking` Este comando atualiza os projetos e gera um ranking de usuários com base nos pontos acumulados.
@@ -34,7 +37,9 @@ Os XP são calculados com base na média dos pontos EVA das sprints. Se a média
 ## 👩‍💻👨‍💻 Requisitos
 
 ### Tecnologias
-- `node.js`
+- [`node.js`](https://nodejs.org/pt)
+- [`back4app`](https://www.back4app.com/docs/javascript/parse-javascript-sdk)
+- [`discord.js`](https://github.com/discordjs/discord.js)
 
 ### Instalação
 1)  Clone do repositório
