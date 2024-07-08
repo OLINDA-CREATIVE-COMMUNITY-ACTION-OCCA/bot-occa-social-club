@@ -8,7 +8,10 @@ const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } =
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
-// Função assíncrona para adicionar ou atualizar projetos no Back4App
+/**
+ * Função assíncrona para adicionar ou atualizar projetos no Back4App
+ * @returns log de alteração realizada
+ */
 async function addOrUpdateProjectsToBack4App() {
     let changesLog = []; // Array para registrar alterações realizadas
 
@@ -36,14 +39,14 @@ async function addOrUpdateProjectsToBack4App() {
                 }
             });
 
-            const projects = tasksResponse.data; // Array de projetos recebidos da API
+            const tasks = tasksResponse.data; // Array de projetos recebidos da API
 
-            if (!Array.isArray(projects)) {
+            if (!Array.isArray(tasks)) {
                 throw new Error('A resposta da API não é um array'); // Lança um erro se a resposta não for um array
             }
 
             // Iteração sobre cada projeto recebido da API
-            for (const project of projects) {
+            for (const task of tasks) {
                 if (project.subject === 'teste') {
                     console.log(`Projeto ${project.subject} ignorado.`); // Ignora projetos de teste com o assunto 'teste'
                     continue;

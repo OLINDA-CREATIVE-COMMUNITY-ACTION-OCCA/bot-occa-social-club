@@ -4,7 +4,13 @@ const { calcularPontosEVA, calcularPontosXP } = require('./ServicePontos');
 // Importa os mapas de nome de sprint e status do arquivo ServiceSprint
 const { sprintNameMap, statusMap } = require('./ServiceSprint');
 
-// Função principal para calcular o ranking com base nos projetos armazenados e usuários
+
+/**
+ * Função principal para calcular o ranking com base nos projetos armazenados e usuários
+ * @param {*} storedProjects 
+ * @param {*} storedUsers 
+ * @returns 
+ */
 function calcularRanking(storedProjects, storedUsers) {
     // Inicializa o array de ranking
     const ranking = [];

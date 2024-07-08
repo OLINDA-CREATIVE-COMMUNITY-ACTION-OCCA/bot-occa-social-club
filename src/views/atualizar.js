@@ -3,7 +3,10 @@ const { addOrUpdateProjectsToBack4App } = require('../services/ServiceProjeto');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 
-// Função assíncrona para lidar com a interação de atualizar
+/**
+ * Função assíncrona para lidar com a interação de atualizar
+ * @param {*} interaction 
+ */
 async function handleAtualizarInteraction(interaction) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();

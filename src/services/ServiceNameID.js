@@ -1,8 +1,10 @@
 
 // todo transformar essas duas funções em apenas uma que vai ter um compotamento diferente se tiver
 // , dentro assigner
+
 /**
- * Função para converter IDs de atribuidores em nomes de usuários
+ * Função para converter IDs de atribuidores em nomes de usuários não é necessário antes de chamar
+ * a função usar split(', ') ela automaticamente vai fazer isso 
  * @param {*} assignerIds 
  * @param {*} storedUsers 
  * @returns o nome do usuário ou o ID se o nome não for encontrado
