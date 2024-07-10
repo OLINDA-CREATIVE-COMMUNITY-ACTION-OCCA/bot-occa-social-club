@@ -1,13 +1,16 @@
-const { getStoredProjects } = require('../models/Projetos'); // Importa a função para obter projetos armazenados
+const { getStoredTasksByProjects } = require('../models/TasksByProjects'); // Importa a função para obter projetos armazenados
 const { fetchStoredUsers } = require('../models/Usuario'); // Importa a função para obter usuários armazenados
 const { calcularPontosEVA, calcularPontosXP } = require('../services/ServicePontos'); // Importa funções para calcular pontos EVA e XP
 
 async function getRankingWithSprints() {
     try {
-        const storedProjects = await getStoredProjects(); // Obtém projetos armazenados
+        const storedTasksByProjects = await getStoredTasksByProjects(); // Obtém projetos armazenados
         const storedUsers = await fetchStoredUsers(); // Obtém usuários armazenados
 
-        const ranking = []; // Array para armazenar o ranking dos usuários
+        /**
+         *  Array para armazenar o ranking dos usuários 
+        */
+        const ranking = [];
 
         storedUsers.forEach(user => {
             const pontosPorSprint = {}; // Objeto para armazenar pontos por sprint
@@ -15,17 +18,17 @@ async function getRankingWithSprints() {
             let totalPontosEVA = 0; // Total de pontos EVA
             let totalPontosXP = 0; // Total de pontos XP
 
-            storedProjects.forEach(project => {
-                if (project.assinantes.includes(user.id) && project.status === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(project.titulo); // Calcula pontos EVA para o projeto
+            storedTasksByProjects.forEach(task => {
+                if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
+                    const pontosEVA = calcularPontosEVA(task.titulo); 
 
-                    if (!pontosPorSprint[project.sprint]) {
-                        pontosPorSprint[project.sprint] = {
+                    if (!pontosPorSprint[task.sprint]) {
+                        pontosPorSprint[task.sprint] = {
                             pontosEVA: pontosEVA,
                             pontosXP: 0
                         };
                     } else {
-                        pontosPorSprint[project.sprint].pontosEVA += pontosEVA;
+                        pontosPorSprint[task.sprint].pontosEVA += pontosEVA;
                     }
 
                     // Incrementa o número de sprints participadas

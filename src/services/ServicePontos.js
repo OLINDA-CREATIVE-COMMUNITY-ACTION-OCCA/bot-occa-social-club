@@ -1,5 +1,9 @@
+/**
+ *  Função para calcular pontos EVA com base no título do projeto
+ * @param {string} titulo 
+ * @returns 
+ */
 function calcularPontosEVA(titulo) {
-    // Função para calcular pontos EVA com base no título do projeto
     const regex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = titulo.match(regex);
 
@@ -22,7 +26,13 @@ function calcularPontosEVA(titulo) {
     return 0; // Retorna 0 pontos EVA se não encontrar correspondência
 }
 
-// Função para calcular pontos XP com base na fórmula fornecida
+/**
+ * Função para calcular pontos XP com base na fórmula fornecida
+ * @param {*} pontosEVA 
+ * @param {*} mediaPontosEVA 
+ * @param {*} numeroSprintsParticipadas 
+ * @returns 
+ */
 function calcularPontosXP(pontosEVA, mediaPontosEVA, numeroSprintsParticipadas) {
     // Calcula pontos XP com base nos parâmetros fornecidos
     if (numeroSprintsParticipadas >= 3 && mediaPontosEVA >= 16) {

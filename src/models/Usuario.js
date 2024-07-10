@@ -3,8 +3,8 @@ const axios = require('axios'); // Importa a biblioteca axios para fazer requisi
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
 /**
- * Pega os usuarios e retorna suas informacoes
- * @returns users retorna o array de usuarios
+ * Pega do Back4App os usuarios e retorna suas informacoes
+ * @returns um array de usuarios
  */
 async function fetchStoredUsers() {
     try {
@@ -19,7 +19,7 @@ async function fetchStoredUsers() {
             id: result.get('ID'),
             nome: result.get('Nome')
         }));
-        return storedUsers;
+        return storedUsers; // Retorna o array de usuários armazenados
     } catch (error) {
         // Exibe um erro no console se ocorrer um problema ao buscar os usuários
         console.error('Erro ao buscar usuários armazenados:', error);

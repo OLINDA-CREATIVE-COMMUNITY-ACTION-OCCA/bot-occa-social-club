@@ -3,8 +3,8 @@ const axios = require('axios'); // Importa a biblioteca axios para fazer requisi
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
 /**
- * Pega todas as tarefas de um projeto, com os campos que sao relevantes
- * @returns 
+ * Pega do Back4App todas as tarefas de um projeto, com os campos que sao relevantes
+ * @returns um array de todas as tarefas do projeto
  */
 async function getStoredTasksByProjects() {
     // Define a classe 'projeto' no Parse
@@ -23,5 +23,5 @@ async function getStoredTasksByProjects() {
     }));
 }
 
-// Exporta a função getStoredProjects para ser utilizada em outros módulos
-module.exports = { getStoredProjects: getStoredTasksByProjects };
+// Exporta a função getStoredTasksByProjects para ser utilizada em outros módulos
+module.exports = { getStoredTasksByProjects: getStoredTasksByProjects };

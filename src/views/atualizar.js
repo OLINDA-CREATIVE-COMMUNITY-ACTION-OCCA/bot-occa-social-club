@@ -1,9 +1,12 @@
 // Importa as funções necessárias dos serviços
-const { addOrUpdateProjectsToBack4App } = require('../services/ServiceProjeto');
+const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 
-// Função assíncrona para lidar com a interação de atualizar
+/**
+ * Função assíncrona para lidar com a interação de atualizar
+ * @param {*} interaction 
+ */
 async function handleAtualizarInteraction(interaction) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
