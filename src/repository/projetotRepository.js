@@ -1,5 +1,5 @@
 // projectRepository.js
-const { getStoredTasksByProjects} = require('../models/Projetos');
+const { getStoredTasksByProjects} = require('../models/TasksByProjects');
 const { getStoredSprints} = require('../models/Sprint');
 const { fetchStoredUsers } = require('../models/Usuario');
 
