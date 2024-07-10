@@ -1,7 +1,10 @@
 // Importa as funções necessárias dos serviços
-const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
+const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
+const {consoleOccinho} = require("../util/ConsoleOccinho");
+
+const logPath = "autalizar.js"
 
 /**
  * Função assíncrona para lidar com a interação de atualizar
@@ -12,9 +15,13 @@ async function handleAtualizarInteraction(interaction) {
     await interaction.deferReply();
     try {
         // Adiciona ou atualiza os usuários no Back4App
+        consoleOccinho?.time("addUsersToBack4App");
         const newUsers = await addUsersToBack4App();
+        consoleOccinho?.timeEnd("addUsersToBack4App");
         // Adiciona ou atualiza os projetos no Back4App
-        const changes = await addOrUpdateProjectsToBack4App();
+        consoleOccinho?.time("addOrUpdateTaskByProjectsToBack4App");
+        const changes = await addOrUpdateTaskByProjectsToBack4App();
+        consoleOccinho?.timeEnd("addOrUpdateTaskByProjectsToBack4App");
         let responseMessage = '';
 
         // Verifica se há novos usuários adicionados ou atualizados e prepara a mensagem de resposta
@@ -30,7 +37,9 @@ async function handleAtualizarInteraction(interaction) {
         }
 
         // Envia a mensagem de resposta ao usuário
+        consoleOccinho?.time("sendLongMessage");
         await sendLongMessage(interaction, responseMessage);
+        consoleOccinho?.timeEnd("sendLongMessage");
     } catch (error) {
         // Em caso de erro, registra o erro no console e informa o usuário
         console.error('Erro ao atualizar dados:', error);

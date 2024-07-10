@@ -2,7 +2,7 @@ const axios = require('axios'); // Importa o módulo axios para fazer requisiç�
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
 /**
- * Função assíncrona para obter usuários da API externa
+ * Função assíncrona para obter usuários da API do EVA
  * @returns um json do eva com os dados dos usuários
  */
 async function getUsersFromAPI() {

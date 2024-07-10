@@ -7,11 +7,11 @@ const { sprintNameMap, statusMap } = require('./ServiceSprint');
 
 /**
  * Função principal para calcular o ranking com base nos projetos armazenados e usuários
- * @param {*} storedProjects 
+ * @param {*} storedTasksByProjects
  * @param {*} storedUsers 
  * @returns 
  */
-function calcularRanking(storedProjects, storedUsers) {
+function calcularRanking(storedTasksByProjects, storedUsers) {
     // Inicializa o array de ranking
     const ranking = [];
 
@@ -24,20 +24,20 @@ function calcularRanking(storedProjects, storedUsers) {
         let totalPontosXP = 0;
 
         // Itera sobre cada projeto armazenado
-        storedProjects.forEach(project => {
+        storedTasksByProjects.forEach(task => {
             // Verifica se o usuário é assinante do projeto e se o projeto está concluído
-            if (project.assinantes.includes(user.id) && project.status === 'Concluído') {
+            if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
                 // Calcula os pontos EVA para o projeto atual
-                const pontosEVA = calcularPontosEVA(project.titulo);
+                const pontosEVA = calcularPontosEVA(task.titulo);
 
                 // Adiciona os pontos ao sprint correspondente
-                if (!pontosPorSprint[project.sprint]) {
-                    pontosPorSprint[project.sprint] = {
+                if (!pontosPorSprint[task.sprint]) {
+                    pontosPorSprint[task.sprint] = {
                         pontosEVA: pontosEVA,
                         pontosXP: 0
                     };
                 } else {
-                    pontosPorSprint[project.sprint].pontosEVA += pontosEVA;
+                    pontosPorSprint[task.sprint].pontosEVA += pontosEVA;
                 }
 
                 // Incrementa o número de sprints participadas

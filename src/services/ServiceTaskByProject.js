@@ -96,13 +96,13 @@ async function addOrUpdateTaskByProjectsToBack4App() {
 
                     // Se houver alterações, atualiza o projeto no Parse
                     if (changed) {
-                        const projectToUpdate = new Parse.Query(Parse.Object.extend('projeto'));
-                        const projectObject = await projectToUpdate.get(existingTaskByProject.id);
+                        const taskByProjectToUpdate = new Parse.Query(Parse.Object.extend('projeto'));
+                        const taskByProjectObject = await taskByProjectToUpdate.get(existingTaskByProject.id);
 
-                        projectObject.set('status', existingTaskByProject.status);
-                        projectObject.set('sprint', existingTaskByProject.sprint);
-                        projectObject.set('assinantes', assignersIds);
-                        await projectObject.save(); // Salva as alterações no projeto
+                        taskByProjectObject.set('status', existingTaskByProject.status);
+                        taskByProjectObject.set('sprint', existingTaskByProject.sprint);
+                        taskByProjectObject.set('assinantes', assignersIds);
+                        await taskByProjectObject.save(); // Salva as alterações no projeto
                         changesLog.push(changeDetails); // Registra as alterações no log de mudanças
                     }
                 } else {
@@ -133,4 +133,4 @@ async function addOrUpdateTaskByProjectsToBack4App() {
     }
 }
 
-module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
+module.exports = { addOrUpdateTaskByProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
