@@ -1,5 +1,5 @@
 // Importa as funções necessárias dos serviços
-const { addOrUpdateProjectsToBack4App } = require('../services/ServiceProjeto');
+const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 

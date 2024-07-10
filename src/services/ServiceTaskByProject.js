@@ -12,13 +12,17 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
  */
-async function addOrUpdateProjectsToBack4App() {
+async function addOrUpdateTaskByProjectsToBack4App() {
+    /**
+     * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
+     * @type {*[string]}
+     */
     let changesLog = []; // Array para registrar alterações realizadas
 
     try {
         // Obtenção de sprints e projetos armazenados e usuários do Parse
         const storedSprints = await getStoredSprints();
-        const storedProjects = await getStoredTasksByProjects();
+        const tasksByProjects = await getStoredTasksByProjects();
         const storedUsers = await fetchStoredUsers();
 
         // Requisição para obter os marcos (milestones) da API externa
@@ -47,34 +51,36 @@ async function addOrUpdateProjectsToBack4App() {
 
             // Iteração sobre cada projeto recebido da API
             for (const task of tasks) {
-                if (project.subject === 'teste') {
-                    console.log(`Projeto ${project.subject} ignorado.`); // Ignora projetos de teste com o assunto 'teste'
+                if (task.subject === 'teste') {
+                    console.log(`Projeto ${task.subject} ignorado.`); // Ignora projetos de teste com o assunto 'teste'
                     continue;
                 }
 
                 // Obtém nomes dos assinantes e IDs dos assinantes
-                const assignersNames = getAssignerNames(project.assigners, storedUsers);
+                const assignersNames = getAssignerNames(task.assigners, storedUsers);
                 const assignersIds = convertAssignerNameToId(assignersNames.split(', '), storedUsers);
-                const existingProject = storedProjects.find(p => p.titulo === project.subject); // Busca por projeto existente pelo título
+                const existingTaskByProject = tasksByProjects.find(taskInDataBase =>
+                    taskInDataBase.titulo === task.subject
+                ); // Busca por projeto existente pelo título
 
-                // Verifica se o projeto já existe no armazenamento
-                if (existingProject) {
+                // Verifica se a tarefa já existe no armazenamento
+                if (existingTaskByProject) {
                     let changed = false; // Flag para indicar se houve alterações
-                    let changeDetails = `Projeto ${project.subject} atualizado:`; // Detalhes das alterações realizadas
+                    let changeDetails = `Projeto ${task.subject} atualizado:`; // Detalhes das alterações realizadas
 
-                    const existingAssignerIds = existingProject.assinantes; // IDs de assinantes existentes no projeto
+                    const existingAssignerIds = existingTaskByProject.assinantes; // IDs de assinantes existentes no projeto
 
                     // Verifica e atualiza o status do projeto se necessário
-                    if (existingProject.status !== statusMap[project.status]) {
-                        changeDetails += `\n  - Status: de "${existingProject.status}" para "${statusMap[project.status]}"`;
-                        existingProject.status = statusMap[project.status];
+                    if (existingTaskByProject.status !== statusMap[task.status]) {
+                        changeDetails += `\n  - Status: de "${existingTaskByProject.status}" para "${statusMap[task.status]}"`;
+                        existingTaskByProject.status = statusMap[task.status];
                         changed = true;
                     }
 
                     // Verifica e atualiza a sprint do projeto se necessário
-                    if (existingProject.sprint !== sprintName) {
-                        changeDetails += `\n  - Sprint: de "${existingProject.sprint}" para "${sprintName}"`;
-                        existingProject.sprint = sprintName;
+                    if (existingTaskByProject.sprint !== sprintName) {
+                        changeDetails += `\n  - Sprint: de "${existingTaskByProject.sprint}" para "${sprintName}"`;
+                        existingTaskByProject.sprint = sprintName;
                         changed = true;
                     }
 
@@ -84,34 +90,34 @@ async function addOrUpdateProjectsToBack4App() {
                         const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
 
                         changeDetails += `\n  - Assinantes: de "${oldAssignerNames}" para "${newAssignerNames}"`;
-                        existingProject.assinantes = assignersIds;
+                        existingTaskByProject.assinantes = assignersIds;
                         changed = true;
                     }
 
                     // Se houver alterações, atualiza o projeto no Parse
                     if (changed) {
                         const projectToUpdate = new Parse.Query(Parse.Object.extend('projeto'));
-                        const projectObject = await projectToUpdate.get(existingProject.id);
+                        const projectObject = await projectToUpdate.get(existingTaskByProject.id);
 
-                        projectObject.set('status', existingProject.status);
-                        projectObject.set('sprint', existingProject.sprint);
+                        projectObject.set('status', existingTaskByProject.status);
+                        projectObject.set('sprint', existingTaskByProject.sprint);
                         projectObject.set('assinantes', assignersIds);
                         await projectObject.save(); // Salva as alterações no projeto
                         changesLog.push(changeDetails); // Registra as alterações no log de mudanças
                     }
                 } else {
-                    // Se o projeto não existir, cria um novo no Parse
-                    const ProjectClass = Parse.Object.extend('projeto');
-                    const newProject = new ProjectClass();
+                    // Se o tarefa realacionada ao projeto não existir, cria um novo no Parse
+                    const TaskByProjectClass = Parse.Object.extend('projeto');
+                    const newTaskByProject = new TaskByProjectClass();
 
-                    newProject.set('titulo', project.subject);
-                    newProject.set('status', statusMap[project.status]);
-                    newProject.set('sprint', sprintName);
-                    newProject.set('assinantes', assignersIds);
-                    await newProject.save(); // Salva o novo projeto no Parse
+                    newTaskByProject.set('titulo', task.subject);
+                    newTaskByProject.set('status', statusMap[task.status]);
+                    newTaskByProject.set('sprint', sprintName);
+                    newTaskByProject.set('assinantes', assignersIds);
+                    await newTaskByProject.save(); // Salva o novo projeto no Parse
 
                     const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
-                    changesLog.push(`Novo projeto adicionado: ${project.subject}\n  - Assinantes: ${newAssignerNames}`); // Registra o novo projeto no log de mudanças
+                    changesLog.push(`Novo projeto adicionado: ${task.subject}\n  - Assinantes: ${newAssignerNames}`); // Registra o novo projeto no log de mudanças
                 }
             }
         }
@@ -127,4 +133,4 @@ async function addOrUpdateProjectsToBack4App() {
     }
 }
 
-module.exports = { addOrUpdateProjectsToBack4App }; // Exporta a função para utilização externa
+module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
