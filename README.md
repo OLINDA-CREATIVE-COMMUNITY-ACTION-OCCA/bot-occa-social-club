@@ -25,7 +25,7 @@ O **OCCINHO** funciona utilizando o [discord](https://discord.com) como interfac
 
 
     ```
-    /pontos-por-sprint
+    /atualizar
     ```
     
 ### Cálculos Específicos
