@@ -4,49 +4,55 @@ const { calcularPontosEVA, calcularPontosXP } = require('./ServicePontos');
 // Importa os mapas de nome de sprint e status do arquivo ServiceSprint
 const { sprintNameMap, statusMap } = require('./ServiceSprint');
 
-
 /**
  * Função principal para calcular o ranking com base nos projetos armazenados e usuários
- * @param {*} storedTasksByProjects
+ * @param {*} storedProjects 
  * @param {*} storedUsers 
  * @returns 
  */
-function calcularRanking(storedTasksByProjects, storedUsers) {
+function calcularRanking(storedProjects, storedUsers) {
     // Inicializa o array de ranking
     const ranking = [];
 
-    // Itera sobre cada usuário armazenado
-    storedUsers.forEach(user => {
-        // Inicializa um objeto para armazenar pontos por sprint
-        const pontosPorSprint = {};
-        let numeroSprintsParticipadas = 0;
-        let totalPontosEVA = 0;
-        let totalPontosXP = 0;
+    // Inicializa um Map para armazenar pontos por usuário e sprint
+    const pontosPorUsuario = new Map();
 
-        // Itera sobre cada projeto armazenado
-        storedTasksByProjects.forEach(task => {
-            // Verifica se o usuário é assinante do projeto e se o projeto está concluído
-            if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
-                // Calcula os pontos EVA para o projeto atual
-                const pontosEVA = calcularPontosEVA(task.titulo);
+    // Itera sobre cada projeto armazenado
+    storedProjects.forEach(project => {
+        // Verifica se o projeto está concluído
+        if (project.status === 'Concluído') {
+            const pontosEVA = calcularPontosEVA(project.titulo);
 
-                // Adiciona os pontos ao sprint correspondente
-                if (!pontosPorSprint[task.sprint]) {
-                    pontosPorSprint[task.sprint] = {
-                        pontosEVA: pontosEVA,
-                        pontosXP: 0
-                    };
-                } else {
-                    pontosPorSprint[task.sprint].pontosEVA += pontosEVA;
+            // Itera sobre cada assinante do projeto
+            project.assinantes.forEach(userId => {
+                if (!pontosPorUsuario.has(userId)) {
+                    pontosPorUsuario.set(userId, {
+                        pontosPorSprint: new Map(),
+                        totalPontosEVA: 0,
+                        totalPontosXP: 0,
+                        numeroSprintsParticipadas: 0
+                    });
                 }
 
-                // Incrementa o número de sprints participadas
-                numeroSprintsParticipadas++;
-            }
-        });
+                const userPoints = pontosPorUsuario.get(userId);
 
-        // Ordena os sprints por número
-        const sprints = Object.keys(pontosPorSprint);
+                if (!userPoints.pontosPorSprint.has(project.sprint)) {
+                    userPoints.pontosPorSprint.set(project.sprint, {
+                        pontosEVA: 0,
+                        pontosXP: 0
+                    });
+                    userPoints.numeroSprintsParticipadas++;
+                }
+
+                userPoints.pontosPorSprint.get(project.sprint).pontosEVA += pontosEVA;
+                userPoints.totalPontosEVA += pontosEVA;
+            });
+        }
+    });
+
+    // Calcula pontos XP para cada usuário
+    pontosPorUsuario.forEach((userPoints, userId) => {
+        const sprints = Array.from(userPoints.pontosPorSprint.keys());
         sprints.sort((a, b) => {
             const matchA = a.match(/\d+/);
             const matchB = b.match(/\d+/);
@@ -55,36 +61,30 @@ function calcularRanking(storedTasksByProjects, storedUsers) {
             return sprintNumA - sprintNumB;
         });
 
-        // Calcula os pontos XP com base nos pontos EVA e nas regras de cálculo
         sprints.forEach((sprint, index) => {
-            const pontosEVA = pontosPorSprint[sprint].pontosEVA;
-            totalPontosEVA += pontosEVA;
-
-            let mediaPontosEVA = 0;
+            const pontosEVA = userPoints.pontosPorSprint.get(sprint).pontosEVA;
             let pontosXP = 0;
 
-            // Regras de conversão de pontos EVA para pontos XP
-            if (index === 0 || index === 1) {
+            if (index < 2) {
                 pontosXP = pontosEVA * 30;
-            } else if (index >= 2) {
-                const pontosEVAAtual = pontosPorSprint[sprint].pontosEVA;
-                const pontosEVAPassada = pontosPorSprint[sprints[index - 1]].pontosEVA;
-                const pontosEVAPenultima = pontosPorSprint[sprints[index - 2]].pontosEVA;
+            } else {
+                const pontosEVAAtual = pontosEVA;
+                const pontosEVAPassada = userPoints.pontosPorSprint.get(sprints[index - 1]).pontosEVA;
+                const pontosEVAPenultima = userPoints.pontosPorSprint.get(sprints[index - 2]).pontosEVA;
+                const mediaPontosEVA = (pontosEVAAtual + pontosEVAPassada + pontosEVAPenultima) / 3;
 
-                mediaPontosEVA = (pontosEVAAtual + pontosEVAPassada + pontosEVAPenultima) / 3;
-                pontosXP = calcularPontosXP(pontosEVA, mediaPontosEVA, numeroSprintsParticipadas);
+                pontosXP = calcularPontosXP(pontosEVA, mediaPontosEVA, userPoints.numeroSprintsParticipadas);
             }
 
-            pontosPorSprint[sprint].pontosXP = pontosXP;
-            totalPontosXP += pontosXP;
+            userPoints.pontosPorSprint.get(sprint).pontosXP = pontosXP;
+            userPoints.totalPontosXP += pontosXP;
         });
 
-        // Adiciona os dados calculados do usuário ao ranking
         ranking.push({
-            nome: user.nome,
-            totalPontosEVA: totalPontosEVA,
-            totalPontosXP: totalPontosXP,
-            pontosPorSprint: pontosPorSprint
+            nome: storedUsers.find(user => user.id === userId).nome,
+            totalPontosEVA: userPoints.totalPontosEVA,
+            totalPontosXP: userPoints.totalPontosXP,
+            pontosPorSprint: Object.fromEntries(userPoints.pontosPorSprint)
         });
     });
 
