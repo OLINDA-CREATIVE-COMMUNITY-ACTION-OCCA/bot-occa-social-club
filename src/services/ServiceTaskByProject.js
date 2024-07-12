@@ -129,4 +129,4 @@ async function addOrUpdateTaskByProjectsToBack4App() {
     }
 }
 
-module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
+module.exports = {addOrUpdateTaskByProjectsToBack4App}; // Exporta a função para utilização externa
