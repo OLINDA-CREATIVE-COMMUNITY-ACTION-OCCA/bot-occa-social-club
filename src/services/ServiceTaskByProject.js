@@ -5,6 +5,7 @@ const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
+const authTokenEva = require("./../index")
 
 /**
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
@@ -27,7 +28,7 @@ async function addOrUpdateTaskByProjectsToBack4App() {
 
         // Requisição para obter os marcos (milestones) da API externa
         const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
-            headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
+            headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
         });
 
         const milestones = milestonesResponse.data; // Array de marcos recebidos da API
@@ -37,7 +38,9 @@ async function addOrUpdateTaskByProjectsToBack4App() {
             const sprintName = sprintNameMap[milestone.slug] || milestone.name; // Nome da sprint mapeado ou nome padrão do marco
 
             const tasksResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
-                headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
+                headers: { 
+                    'Authorization': `Bearer ${authTokenEva}` 
+                } // Token de autorização da API
             });
 
             const tasks = tasksResponse.data; // Array de projetos recebidos da API

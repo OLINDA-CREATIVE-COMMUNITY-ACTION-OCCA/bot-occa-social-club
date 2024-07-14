@@ -3,11 +3,14 @@ const Parse = require('parse/node'); // Importa o módulo Parse para manipulaç�
 Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY); // Inicializa o Parse com as chaves da aplicação
 Parse.serverURL = process.env.PARSE_SERVER_URL; // Define a URL do servidor Parse
 
+const { getAuthToken } = require('./util/authToken');
 const { Client, GatewayIntentBits, REST, Routes } = require('discord.js'); // Importa as classes e funções necessárias do discord.js
 const { handleRankingInteraction } = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
 const { handlePontosPorSprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
 const { handleAtualizarInteraction } = require('./views/atualizar'); // Importa a função de manipulação da interação de atualizar
 const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
+
+let authTokenEva = getAuthToken(process.env.EMAIL, process.env.PASSWORD)
 
 // Configuração do bot do Discord
 const client = new Client({ 
@@ -55,3 +58,5 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
 });
 
 client.login(process.env.DISCORD_TOKEN); // Faz login no Discord com o token do bot
+
+module.exports = { authTokenEva }
