@@ -1,51 +1,42 @@
-// Importa as funções necessárias dos serviços
-const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
+const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
-const {consoleOccinho} = require("../util/ConsoleOccinho");
 
-const logPath = "autalizar.js"
-
-/**
- * Função assíncrona para lidar com a interação de atualizar
- * @param {*} interaction 
- */
-async function handleAtualizarInteraction(interaction, authTokenEva) {
-    // Responde ao usuário que o processamento está em andamento
-    await interaction.deferReply();
+async function handleAtualizarInteraction(interaction) {
     try {
-        // Adiciona ou atualiza os usuários no Back4App
-        consoleOccinho?.time("addUsersToBack4App");
-        const newUsers = await addUsersToBack4App(authTokenEva);
-        consoleOccinho?.timeEnd("addUsersToBack4App");
-        // Adiciona ou atualiza os projetos no Back4App
-        consoleOccinho?.time("addOrUpdateTaskByProjectsToBack4App");
-        const changes = await addOrUpdateTaskByProjectsToBack4App();
-        consoleOccinho?.timeEnd("addOrUpdateTaskByProjectsToBack4App");
+        // Verifica se a interação já foi deferida ou respondida
+        if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferReply();
+        } else {
+            console.log('Interação já foi deferida ou respondida.');
+            return;
+        }
+
+        // Execute as funções em paralelo
+        const [newUsers, changes] = await Promise.all([addUsersToBack4App(), addOrUpdateProjectsToBack4App()]);
         let responseMessage = '';
 
-        // Verifica se há novos usuários adicionados ou atualizados e prepara a mensagem de resposta
         if (newUsers.length > 0) {
             responseMessage += `Novos usuários adicionados ou atualizados:\n${newUsers.join('\n')}\n\n`;
         }
 
-        // Verifica se há mudanças nos projetos e prepara a mensagem de resposta
         if (changes.length > 0) {
             responseMessage += `Projetos atualizados:\n${changes.join('\n')}`;
         } else {
             responseMessage += 'Nenhuma mudança detectada nos projetos.';
         }
 
-        // Envia a mensagem de resposta ao usuário
-        consoleOccinho?.time("sendLongMessage");
         await sendLongMessage(interaction, responseMessage);
-        consoleOccinho?.timeEnd("sendLongMessage");
     } catch (error) {
-        // Em caso de erro, registra o erro no console e informa o usuário
         console.error('Erro ao atualizar dados:', error);
-        await interaction.followUp('Ocorreu um erro ao tentar atualizar os dados.');
+
+        // Verifica se a interação foi deferida antes de tentar seguir com a resposta de erro
+        if (!interaction.deferred && !interaction.replied) {
+            await interaction.reply('Ocorreu um erro ao tentar deferir a resposta.');
+        } else {
+            await interaction.followUp('Ocorreu um erro ao tentar atualizar os dados.');
+        }
     }
 }
 
-// Exporta a função handleAtualizarInteraction para uso em outros módulos
 module.exports = { handleAtualizarInteraction };

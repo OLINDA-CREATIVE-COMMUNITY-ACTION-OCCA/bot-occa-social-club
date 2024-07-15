@@ -25,10 +25,9 @@ async function addOrUpdateTaskByProjectsToBack4App() {
             fetchStoredUsers()
         ]);
 
-        consoleOccinho?.log(`ServiceTaskByProject.js ${authTokenEva}`)
         // Requisição para obter os marcos (milestones) da API externa
         const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
-            headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
+            headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
         });
 
         const milestones = milestonesResponse.data; // Array de marcos recebidos da API
@@ -38,9 +37,7 @@ async function addOrUpdateTaskByProjectsToBack4App() {
             const sprintName = sprintNameMap[milestone.slug] || milestone.name; // Nome da sprint mapeado ou nome padrão do marco
 
             const tasksResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
-                headers: { 
-                    'Authorization': `Bearer ${authTokenEva}` 
-                } // Token de autorização da API
+                headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
             });
 
             const tasks = tasksResponse.data; // Array de projetos recebidos da API
@@ -132,4 +129,4 @@ async function addOrUpdateTaskByProjectsToBack4App() {
     }
 }
 
-module.exports = {addOrUpdateTaskByProjectsToBack4App}; // Exporta a função para utilização externa
+module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
