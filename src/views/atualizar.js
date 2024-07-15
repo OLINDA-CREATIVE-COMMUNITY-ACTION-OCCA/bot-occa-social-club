@@ -10,13 +10,13 @@ const logPath = "autalizar.js"
  * Função assíncrona para lidar com a interação de atualizar
  * @param {*} interaction 
  */
-async function handleAtualizarInteraction(interaction) {
+async function handleAtualizarInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
         // Adiciona ou atualiza os usuários no Back4App
         consoleOccinho?.time("addUsersToBack4App");
-        const newUsers = await addUsersToBack4App();
+        const newUsers = await addUsersToBack4App(authTokenEva);
         consoleOccinho?.timeEnd("addUsersToBack4App");
         // Adiciona ou atualiza os projetos no Back4App
         consoleOccinho?.time("addOrUpdateTaskByProjectsToBack4App");

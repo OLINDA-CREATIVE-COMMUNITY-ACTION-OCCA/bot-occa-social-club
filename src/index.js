@@ -10,7 +10,7 @@ const { handlePontosPorSprintInteraction } = require('./views/pontosPorSprintInt
 const { handleAtualizarInteraction } = require('./views/atualizar'); // Importa a função de manipulação da interação de atualizar
 const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
 
-let authTokenEva = getAuthToken(process.env.EMAIL, process.env.PASSWORD)
+const authTokenEva = getAuthToken(process.env.EMAIL, process.env.PASSWORD)
 
 // Configuração do bot do Discord
 const client = new Client({ 
@@ -26,6 +26,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); //
 
 (async () => {
     try {
+        
         console.log('Registrando comandos de barra...');
         await rest.put( // Registra os comandos de barra
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // Define as rotas para os comandos
@@ -53,10 +54,9 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
     } else if (commandName === 'pontos-por-sprint') { // Se o comando for 'pontos-por-sprint'
         await handlePontosPorSprintInteraction(interaction); // Chama a função de manipulação de pontos por sprint
     } else if (commandName === 'atualizar') { // Se o comando for 'atualizar'
-        await handleAtualizarInteraction(interaction); // Chama a função de manipulação de atualização
+        
+        await handleAtualizarInteraction(interaction, authTokenEva); // Chama a função de manipulação de atualização
     }
 });
 
 client.login(process.env.DISCORD_TOKEN); // Faz login no Discord com o token do bot
-
-module.exports = { authTokenEva }

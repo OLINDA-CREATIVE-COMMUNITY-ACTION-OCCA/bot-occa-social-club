@@ -5,7 +5,6 @@ const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
-const authTokenEva = require("./../index")
 
 /**
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
@@ -26,6 +25,7 @@ async function addOrUpdateTaskByProjectsToBack4App() {
             fetchStoredUsers()
         ]);
 
+        consoleOccinho?.log(`ServiceTaskByProject.js ${authTokenEva}`)
         // Requisição para obter os marcos (milestones) da API externa
         const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
             headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
