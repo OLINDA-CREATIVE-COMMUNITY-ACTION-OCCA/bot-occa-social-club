@@ -9,9 +9,9 @@ const { handleRankingInteraction } = require('./views/ranking'); // Importa a fu
 const { handlePontosPorSprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
 const { handleAtualizarInteraction } = require('./views/atualizar'); // Importa a função de manipulação da interação de atualizar
 const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
+const { consoleOccinho } = require('./util/ConsoleOccinho');
 
-const authTokenEva = getAuthToken(process.env.EMAIL, process.env.PASSWORD)
-
+let authTokenEva = ''
 // Configuração do bot do Discord
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] // Define as intenções do bot
@@ -26,7 +26,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); //
 
 (async () => {
     try {
-        
+        consoleOccinho?.log("Pegando a chave da api de eva")
+        authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
         console.log('Registrando comandos de barra...');
         await rest.put( // Registra os comandos de barra
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // Define as rotas para os comandos
@@ -54,7 +55,7 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
     } else if (commandName === 'pontos-por-sprint') { // Se o comando for 'pontos-por-sprint'
         await handlePontosPorSprintInteraction(interaction); // Chama a função de manipulação de pontos por sprint
     } else if (commandName === 'atualizar') { // Se o comando for 'atualizar'
-        const authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
+        
         await handleAtualizarInteraction(interaction, authTokenEva); // Chama a função de manipulação de atualização
     }
 });
