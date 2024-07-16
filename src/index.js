@@ -7,7 +7,6 @@ const { getAuthToken } = require('./util/authToken');
 const { Client, GatewayIntentBits, REST, Routes } = require('discord.js'); // Importa as classes e funções necessárias do discord.js
 const { handleRankingInteraction } = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
 const { handlePontosPorSprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
-const { handleAtualizarInteraction } = require('./views/atualizar'); // Importa a função de manipulação da interação de atualizar
 const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
 const { consoleOccinho } = require('./util/ConsoleOccinho');
 
@@ -34,8 +33,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); //
             {
                 body: [ // Define a estrutura dos comandos de barra
                     { name: 'ranking', description: 'Atualiza os projetos e mostra o ranking de usuários' },
-                    { name: 'pontos-por-sprint', description: 'Mostra os pontos de EVA por assinante' },
-                    { name: 'atualizar', description: 'Verifica e atualiza projetos existentes com dados da API' }
+                    { name: 'pontos-por-sprint', description: 'Mostra os pontos de EVA por assinante Atualizados' },
                 ]
             }
         );
@@ -54,9 +52,6 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
         await handleRankingInteraction(interaction); // Chama a função de manipulação de ranking
     } else if (commandName === 'pontos-por-sprint') { // Se o comando for 'pontos-por-sprint'
         await handlePontosPorSprintInteraction(interaction); // Chama a função de manipulação de pontos por sprint
-    } else if (commandName === 'atualizar') { // Se o comando for 'atualizar'
-        
-        await handleAtualizarInteraction(interaction, authTokenEva); // Chama a função de manipulação de atualização
     }
 });
 
