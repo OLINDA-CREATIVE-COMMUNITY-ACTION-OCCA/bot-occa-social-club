@@ -4,6 +4,7 @@ const Parse = require('parse/node'); // Para interação com o Parse Server
 const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require('../repository/projetotRepository'); // Funções de acesso aos dados armazenados
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
+const { consoleOccinho } = require('../util/ConsoleOccinho')
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
 /**

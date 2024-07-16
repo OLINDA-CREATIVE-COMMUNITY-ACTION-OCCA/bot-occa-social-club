@@ -54,7 +54,7 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
     } else if (commandName === 'pontos-por-sprint') { // Se o comando for 'pontos-por-sprint'
         await handlePontosPorSprintInteraction(interaction); // Chama a função de manipulação de pontos por sprint
     } else if (commandName === 'atualizar') { // Se o comando for 'atualizar'
-        
+        const authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
         await handleAtualizarInteraction(interaction, authTokenEva); // Chama a função de manipulação de atualização
     }
 });
