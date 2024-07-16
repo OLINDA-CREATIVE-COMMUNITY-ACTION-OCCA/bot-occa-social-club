@@ -11,7 +11,7 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
  */
-async function addOrUpdateTaskByProjectsToBack4App() {
+async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
     /**
      * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
      * @type {*[string]}

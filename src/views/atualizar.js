@@ -20,7 +20,7 @@ async function handleAtualizarInteraction(interaction, authTokenEva) {
         consoleOccinho?.timeEnd("addUsersToBack4App");
         // Adiciona ou atualiza os projetos no Back4App
         consoleOccinho?.time("addOrUpdateTaskByProjectsToBack4App");
-        const changes = await addOrUpdateTaskByProjectsToBack4App();
+        const changes = await addOrUpdateTaskByProjectsToBack4App(authTokenEva);
         consoleOccinho?.timeEnd("addOrUpdateTaskByProjectsToBack4App");
         let responseMessage = '';
 

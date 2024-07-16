@@ -10,6 +10,7 @@ async function getUsersFromAPI(authTokenEva) {
     try {
         consoleOccinho?.log(`${authTokenEva}`)
         consoleOccinho?.log(`getUsersFromApi ${'' == authTokenEva}`)
+        authTokenEva.then
         const response = await axios.get('https://apiproduction.evastrategy.com/api/v1/users', {
             headers: {
                 'Authorization': `Bearer  ${authTokenEva}` // Define o token de autorização no cabeçalho da requisição
