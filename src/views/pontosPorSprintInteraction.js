@@ -1,12 +1,12 @@
 // Importa a função getRankingWithSprints do controlador e sendLongMessage do serviço de mensagens
 const { getRankingWithSprints } = require('../controllers/ControllerRanking');
 const { sendLongMessage } = require('../services/ServiceMensagens');
-const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const {addUsersToBack4App} =require('../services/ServiceUsuario')
-async function updateData() {
+const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
+const {addUsersToBack4App} = require('../services/ServiceUsuario')
+async function updateData(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
-        const [newUsers, changes] = await Promise.all([addUsersToBack4App(), addOrUpdateProjectsToBack4App()]);
+        const [newUsers, changes] = await Promise.all([addUsersToBack4App(authTokenEva), addOrUpdateTaskByProjectsToBack4App(authTokenEva)]);
         let responseMessage = '';
 
         if (newUsers.length > 0) {
@@ -27,12 +27,12 @@ async function updateData() {
 }
 
 // Função assíncrona para lidar com a interação de pontos por sprint
-async function handlePontosPorSprintInteraction(interaction) {
+async function handlePointsBySprintInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
         // Atualiza os dados antes de obter os pontos por sprint
-        const updateMessage = await updateData();
+        const updateMessage = await updateData(authTokenEva);
         // Obtém o ranking com sprints
         const rankingComSprints = await getRankingWithSprints();
 
@@ -79,5 +79,5 @@ async function handlePontosPorSprintInteraction(interaction) {
     }
 }
 
-// Exporta a função handlePontosPorSprintInteraction para uso em outros módulos
-module.exports = { handlePontosPorSprintInteraction };
+
+module.exports = { handlePointsBySprintInteraction };
