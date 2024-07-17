@@ -24,4 +24,4 @@ async function getStoredTasksByProjects() {
 }
 
 // Exporta a função getStoredTasksByProjects para ser utilizada em outros módulos
-module.exports = { getStoredTasksByProjects: getStoredTasksByProjects };
+module.exports = { getStoredTasksByProjects };
