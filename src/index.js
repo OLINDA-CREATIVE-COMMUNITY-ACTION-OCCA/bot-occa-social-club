@@ -6,7 +6,7 @@ Parse.serverURL = process.env.PARSE_SERVER_URL; // Define a URL do servidor Pars
 const { getAuthToken } = require('./util/authToken');
 const { Client, GatewayIntentBits, REST, Routes } = require('discord.js'); // Importa as classes e funções necessárias do discord.js
 const { handleRankingInteraction } = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
-const { handlePontosPorSprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
+const { handlePointsBySprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
 const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
 const { consoleOccinho } = require('./util/ConsoleOccinho');
 
@@ -49,9 +49,9 @@ client.on('interactionCreate', async interaction => { // Evento acionado quando 
     const { commandName } = interaction; // Obtém o nome do comando
 
     if (commandName === 'ranking') { // Se o comando for 'ranking'
-        await handleRankingInteraction(interaction); // Chama a função de manipulação de ranking
+        await handleRankingInteraction(interaction, authTokenEva); // Chama a função de manipulação de ranking
     } else if (commandName === 'pontos-por-sprint') { // Se o comando for 'pontos-por-sprint'
-        await handlePontosPorSprintInteraction(interaction); // Chama a função de manipulação de pontos por sprint
+        await handlePointsBySprintInteraction(interaction, authTokenEva); // Chama a função de manipulação de pontos por sprint
     }
 });
 

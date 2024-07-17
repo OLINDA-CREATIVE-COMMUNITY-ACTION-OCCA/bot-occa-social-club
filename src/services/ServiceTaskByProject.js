@@ -7,6 +7,8 @@ const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Ma
 const { consoleOccinho } = require('../util/ConsoleOccinho')
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
+const logPath = "ServiceTaskByProject "
+
 /**
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
@@ -26,9 +28,10 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
             fetchStoredUsers()
         ]);
 
+        consoleOccinho?.log(logPath, `toke de eva é ${authTokenEva}`)
         // Requisição para obter os marcos (milestones) da API externa
         const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
-            headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
+            headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
         });
 
         const milestones = milestonesResponse.data; // Array de marcos recebidos da API
@@ -38,7 +41,7 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
             const sprintName = sprintNameMap[milestone.slug] || milestone.name; // Nome da sprint mapeado ou nome padrão do marco
 
             const tasksResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
-                headers: { 'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` } // Token de autorização da API
+                headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
             });
 
             const tasks = tasksResponse.data; // Array de projetos recebidos da API
@@ -130,4 +133,4 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
     }
 }
 
-module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
+module.exports = { addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa

@@ -1,13 +1,16 @@
 // Importa a função getRankingWithSprints do controlador e sendLongMessage do serviço de mensagens
 const { getRankingWithSprints } = require('../controllers/ControllerRanking');
 const { sendLongMessage } = require('../services/ServiceMensagens');
-const { addOrUpdateProjectsToBack4App } = require('../services/ServiceTaskByProject');
+const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const {addUsersToBack4App} =require('../services/ServiceUsuario')
 
-async function updateData() {
+async function updateData(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
-        const [newUsers, changes] = await Promise.all([addUsersToBack4App(), addOrUpdateProjectsToBack4App()]);
+        const [newUsers, changes] = await Promise.all([
+            addUsersToBack4App(authTokenEva),
+            addOrUpdateTaskByProjectsToBack4App(authTokenEva)
+        ]);
         let responseMessage = '';
 
         if (newUsers.length > 0) {
@@ -28,12 +31,12 @@ async function updateData() {
 }
 
 // Função assíncrona para lidar com a interação de ranking
-async function handleRankingInteraction(interaction) {
+async function handleRankingInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
         // Atualiza os dados antes de obter o ranking
-        const updateMessage = await updateData();
+        const updateMessage = await updateData(authTokenEva);
         // Obtém o ranking com sprints
         const ranking = await getRankingWithSprints();
 
