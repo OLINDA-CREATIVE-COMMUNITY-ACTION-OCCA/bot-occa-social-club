@@ -1,6 +1,7 @@
 const { getStoredTasksByProjects } = require('../models/TasksByProjects'); // Importa a função para obter projetos armazenados
 const { fetchStoredUsers } = require('../models/Usuario'); // Importa a função para obter usuários armazenados
 const { calcularPontosEVA, calcularPontosXP } = require('../services/ServicePontos'); // Importa funções para calcular pontos EVA e XP
+const { consoleOccinho } = require('../util/ConsoleOccinho');
 
 async function getRankingWithSprints() {
     try {

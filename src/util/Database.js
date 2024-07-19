@@ -17,7 +17,6 @@ const sequelize = new Sequelize(
 async function startDatabase() {
     try {
         await sequelize.authenticate();
-        await sequelize.sync()
         consoleOccinho?.log("A conecção foi estabelecida com sucesso!")
     } catch (error) {
         console.error('Não foi possível se conectar com o banco de dados', error)

@@ -9,8 +9,9 @@ const {handleRankingInteraction} = require('./views/ranking'); // Importa a fun�
 const {handlePointsBySprintInteraction} = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
 const {sendLongMessage} = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
 const {consoleOccinho} = require('./util/ConsoleOccinho');
-const { startDatabase } = require('./util/Database')
-
+const { startDatabase, sequelize } = require('./util/Database')
+// Import the built-in data types
+const { DataTypes } = require('sequelize');
 
 
 let authTokenEva = ''
@@ -32,6 +33,7 @@ const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN); // C
         authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
         console.log('Registrando comandos de barra...');
         await startDatabase();
+        
         await rest.put( // Registra os comandos de barra
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // Define as rotas para os comandos
             {

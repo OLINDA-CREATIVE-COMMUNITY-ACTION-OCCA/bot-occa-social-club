@@ -1,7 +1,31 @@
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 const axios = require('axios'); // Importa a biblioteca axios para fazer requisições HTTP
 const Parse = require('parse/node'); // Importa o SDK do Parse
+const sequelize = require('../util/Database');
+// Import the built-in data types
+const { DataTypes } = require('sequelize');
 
+const User = sequelize.define(
+    'User',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            unique: true
+        },
+        name_eva: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        id_eva: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            
+        }
+    }
+);
 /**
  * Pega do Back4App os usuarios e retorna suas informacoes
  * @returns um array de usuarios
