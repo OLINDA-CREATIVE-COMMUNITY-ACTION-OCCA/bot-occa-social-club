@@ -4,15 +4,18 @@ Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY); // Inicial
 Parse.serverURL = process.env.PARSE_SERVER_URL; // Define a URL do servidor Parse
 
 const { getAuthToken } = require('./util/authToken');
-const { Client, GatewayIntentBits, REST, Routes } = require('discord.js'); // Importa as classes e funções necessárias do discord.js
-const { handleRankingInteraction } = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
-const { handlePointsBySprintInteraction } = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
-const { sendLongMessage } = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
-const { consoleOccinho } = require('./util/ConsoleOccinho');
+const {Client, GatewayIntentBits, REST, Routes} = require('discord.js'); // Importa as classes e funções necessárias do discord.js
+const {handleRankingInteraction} = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
+const {handlePointsBySprintInteraction} = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
+const {sendLongMessage} = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
+const {consoleOccinho} = require('./util/ConsoleOccinho');
+const { startDatabase } = require('./util/Database')
+
+
 
 let authTokenEva = ''
 // Configuração do bot do Discord
-const client = new Client({ 
+const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] // Define as intenções do bot
 });
 
@@ -21,19 +24,20 @@ client.once('ready', () => { // Evento acionado quando o bot estiver pronto
 });
 
 // Registrar os comandos de barra
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); // Cria uma nova instância do REST e define o token do bot
+const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN); // Cria uma nova instância do REST e define o token do bot
 
 (async () => {
     try {
         consoleOccinho?.log("Pegando a chave da api de eva")
         authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
         console.log('Registrando comandos de barra...');
+        await startDatabase();
         await rest.put( // Registra os comandos de barra
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // Define as rotas para os comandos
             {
                 body: [ // Define a estrutura dos comandos de barra
-                    { name: 'ranking', description: 'Atualiza os projetos e mostra o ranking de usuários' },
-                    { name: 'pontos-por-sprint', description: 'Mostra os pontos de EVA por assinante Atualizados' },
+                    {name: 'ranking', description: 'Atualiza os projetos e mostra o ranking de usuários'},
+                    {name: 'pontos-por-sprint', description: 'Mostra os pontos de EVA por assinante Atualizados'},
                 ]
             }
         );
@@ -46,7 +50,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); //
 client.on('interactionCreate', async interaction => { // Evento acionado quando uma interação é criada
     if (!interaction.isCommand()) return; // Verifica se a interação é um comando
 
-    const { commandName } = interaction; // Obtém o nome do comando
+    const {commandName} = interaction; // Obtém o nome do comando
 
     if (commandName === 'ranking') { // Se o comando for 'ranking'
         await handleRankingInteraction(interaction, authTokenEva); // Chama a função de manipulação de ranking
