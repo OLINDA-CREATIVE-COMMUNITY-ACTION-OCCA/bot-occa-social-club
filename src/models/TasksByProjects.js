@@ -19,7 +19,8 @@ async function getStoredTasksByProjects() {
         titulo: tarefa.get('titulo'),
         status: tarefa.get('status'),
         sprint: tarefa.get('sprint'),
-        assinantes: tarefa.get('assinantes')
+        assinantes: tarefa.get('assinantes'),
+        descricao: tarefa.get('descricao')
     }));
 }
 
