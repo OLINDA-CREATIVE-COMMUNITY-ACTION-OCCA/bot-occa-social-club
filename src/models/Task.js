@@ -30,7 +30,8 @@ const Task = sequelize.define(
             allowNull: false,
         },
         assigners_id_eva: {
-            type: DataTypes.ARRAY(DataTypes.INTEGER)
+            type: DataTypes.ARRAY(DataTypes.INTEGER),
+            allowNull: false
         }
     }
 );
