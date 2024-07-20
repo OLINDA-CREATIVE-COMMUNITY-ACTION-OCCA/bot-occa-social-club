@@ -1,21 +1,34 @@
-require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
-const axios = require('axios'); // Importa a biblioteca axios para fazer requisições HTTP
-const Parse = require('parse/node'); // Importa o SDK do Parse
+const { sequelize } = require('../util/Database');
+const {DataTypes} = require('sequelize');
 
 /**
- * Pega a Sprint do Back4app e retorna o nome da Sprint
- * @returns 
+ * Model para sprint o slug é um identificador único para a sprint, como um id
  */
-async function getStoredSprints() {
-    // Define a classe 'sprint' no Parse
-    const Sprint = Parse.Object.extend('sprint');
-    // Cria uma nova consulta para a classe 'sprint'
-    const query = new Parse.Query(Sprint);
-    // Executa a consulta para obter todas as sprints armazenadas
-    const results = await query.find();
-    // Mapeia os resultados para um array contendo apenas os slugs das sprints
-    return results.map(sprint => sprint.get('slug'));
-}
+const Sprint = sequelize.define(
+    'Sprint',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            unique: true
+        },
+        id_eva: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true,
+        },
+        slug_eva: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false
+        },
+        name_eva: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    }
+);
 
-// Exporta a função getStoredSprints para ser utilizada em outros módulos
-module.exports = { getStoredSprints };
+module.exports = { Sprint }

@@ -1,4 +1,4 @@
-const sequelize = require('../util/Database');
+const { sequelize } = require('../util/Database');
 // Import the built-in data types
 const { DataTypes } = require('sequelize');
 
