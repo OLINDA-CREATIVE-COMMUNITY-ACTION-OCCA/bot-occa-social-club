@@ -5,6 +5,7 @@ const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
 const { consoleOccinho } = require('../util/ConsoleOccinho');
+const { User } = require('../models/User')
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
 const logPath = "ServiceTaskByProject";
@@ -25,7 +26,7 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
         const [storedSprints, tasksByProjects, storedUsers] = await Promise.all([
             getStoredSprints(),
             getStoredTasksByProjects(),
-            fetchStoredUsers()
+            User.findAll()
         ]);
 
         consoleOccinho?.log(logPath, `token de eva é ${authTokenEva}`);

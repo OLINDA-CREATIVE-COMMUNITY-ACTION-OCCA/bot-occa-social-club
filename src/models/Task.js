@@ -11,29 +11,29 @@ const Task = sequelize.define(
             primaryKey: true,
             unique: true
         },
-        id_eva: {
+        eva_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             unique: true
         },
-        title_eva: {
+        eva_title: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        status_number_eva: {
+        eva_status_number: {
             type: DataTypes.INTEGER,
             allowNull: false, 
             unique: true,
         },
-        sprint_name_eva: {
+        sprint_eva_name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        assigners_id_eva: {
+        assigners_eva_id: {
             type: DataTypes.ARRAY(DataTypes.INTEGER),
             allowNull: false
         }
     }
 );
-// precisa fazer a relação entre User e assigners_id_eva algum tipo de verificação
+// precisa fazer a relação entre User e assigners_eva_id algum tipo de verificação
 module.exports = {Task}

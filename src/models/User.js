@@ -12,11 +12,11 @@ const User = sequelize.define(
             primaryKey: true,
             unique: true
         },
-        name_eva: {
+        eva_name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        id_eva: {
+        eva_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             

@@ -14,17 +14,17 @@ const Sprint = sequelize.define(
             primaryKey: true,
             unique: true
         },
-        id_eva: {
+        eva_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             unique: true,
         },
-        slug_eva: {
+        eva_slug: {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },
-        name_eva: {
+        eva_name: {
             type: DataTypes.STRING,
             allowNull: false
         }

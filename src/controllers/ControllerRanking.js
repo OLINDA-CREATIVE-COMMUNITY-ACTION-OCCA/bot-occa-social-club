@@ -2,11 +2,12 @@ const { getStoredTasksByProjects } = require('../models/TasksByProjects'); // Im
 const { fetchStoredUsers } = require('../models/Usuario'); // Importa a função para obter usuários armazenados
 const { calcularPontosEVA, calcularPontosXP } = require('../services/ServicePontos'); // Importa funções para calcular pontos EVA e XP
 const { consoleOccinho } = require('../util/ConsoleOccinho');
+const { User } = require('../models/User')
 
 async function getRankingWithSprints() {
     try {
         const storedTasksByProjects = await getStoredTasksByProjects(); // Obtém projetos armazenados
-        const storedUsers = await fetchStoredUsers(); // Obtém usuários armazenados
+        const storedUsers = await User.findAll(); // Obtém usuários armazenados
 
         /**
          *  Array para armazenar o ranking dos usuários 
@@ -20,7 +21,7 @@ async function getRankingWithSprints() {
             let totalPontosXP = 0; // Total de pontos XP
 
             storedTasksByProjects.forEach(task => {
-                if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
+                if (task.assinantes.includes(user.eva_id) && task.status === 'Concluído') {
                     const pontosEVA = calcularPontosEVA(task.titulo); 
 
                     if (!pontosPorSprint[task.sprint]) {
@@ -71,7 +72,7 @@ async function getRankingWithSprints() {
             });
 
             ranking.push({
-                nome: user.nome,
+                nome: user.eva_name,
                 totalPontosEVA: totalPontosEVA,
                 totalPontosXP: totalPontosXP,
                 pontosPorSprint: pontosPorSprint

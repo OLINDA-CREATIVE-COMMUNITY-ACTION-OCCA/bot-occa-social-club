@@ -6,13 +6,13 @@
  * Função para converter IDs de atribuidores em nomes de usuários não é necessário antes de chamar
  * a função usar split(', ') ela automaticamente vai fazer isso 
  * @param {*} assignerIds 
- * @param {*} storedUsers 
+ * @param {*} storedUsers
  * @returns o nome do usuário ou o ID se o nome não for encontrado
  */
 function convertAssignerIdsToNames(assignerIds, storedUsers) {
     return assignerIds.split(', ').map(id => {
-        const user = storedUsers.find(user => user.id.toString() === id.toString());
-        return user ? user.nome : `ID: ${id}`; 
+        const user = storedUsers.find(user => user.eva_id.toString() === id.toString());
+        return user ? user.eva_name : `ID: ${id}`;
     }).join(', '); // Junta os nomes separados por ', '
 }
 
@@ -24,8 +24,8 @@ function convertAssignerIdsToNames(assignerIds, storedUsers) {
  */
 function getAssignerNames(assignerIds, storedUsers) {
     return assignerIds.map(id => {
-        const user = storedUsers.find(user => user.id.toString() === id.toString());
-        return user ? user.nome : `ID: ${id}`; 
+        const user = storedUsers.find(user => user.eva_id.toString() === id.toString());
+        return user ? user.eva_name : `ID: ${id}`; 
     }).join(', ');
 }
 
@@ -38,9 +38,9 @@ function getAssignerNames(assignerIds, storedUsers) {
  */
 function convertAssignerNameToId(assignerNames, storedUsers) {
     const ids = assignerNames.map(name => {
-        const user = storedUsers.find(user => user.nome === name.trim());
+        const user = storedUsers.find(user => user.eva_name === name.trim());
         if (user) {
-            return user.id;
+            return user.eva_id;
         } else {
             return null; 
         }
