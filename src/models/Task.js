@@ -1,5 +1,5 @@
-const {sequelize} = require('../util/Database');
-const {DataTypes} = require('sequelize')
+const { sequelize } = require('../util/Database');
+const { DataTypes } = require('sequelize')
 
 const Task = sequelize.define(
     'Task',
@@ -22,18 +22,25 @@ const Task = sequelize.define(
         },
         eva_status_number: {
             type: DataTypes.INTEGER,
-            allowNull: false, 
+            allowNull: false,
             unique: true,
         },
-        sprint_eva_name: {
+        eva_status_name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        eva_sprint_name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        assigners_eva_id: {
+        eva_assigners_id: {
             type: DataTypes.ARRAY(DataTypes.INTEGER),
             allowNull: false
+        },
+        eva_description: {
+            type: DataTypes.TEXT
         }
     }
 );
 // precisa fazer a relação entre User e assigners_eva_id algum tipo de verificação
-module.exports = {Task}
+module.exports = { Task }

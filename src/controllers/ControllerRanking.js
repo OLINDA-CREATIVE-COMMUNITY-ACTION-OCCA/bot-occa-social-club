@@ -1,12 +1,11 @@
-const { getStoredTasksByProjects } = require('../models/TasksByProjects'); // Importa a função para obter projetos armazenados
-const { fetchStoredUsers } = require('../models/Usuario'); // Importa a função para obter usuários armazenados
 const { calcularPontosEVA, calcularPontosXP } = require('../services/ServicePontos'); // Importa funções para calcular pontos EVA e XP
 const { consoleOccinho } = require('../util/ConsoleOccinho');
 const { User } = require('../models/User')
+const { Task } = require('../models/Task');
 
 async function getRankingWithSprints() {
     try {
-        const storedTasksByProjects = await getStoredTasksByProjects(); // Obtém projetos armazenados
+        const storedTasks = await Task.findAll(); // Obtém projetos armazenados
         const storedUsers = await User.findAll(); // Obtém usuários armazenados
 
         /**
@@ -20,9 +19,9 @@ async function getRankingWithSprints() {
             let totalPontosEVA = 0; // Total de pontos EVA
             let totalPontosXP = 0; // Total de pontos XP
 
-            storedTasksByProjects.forEach(task => {
+            storedTasks.forEach(task => {
                 if (task.assinantes.includes(user.eva_id) && task.status === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(task.titulo); 
+                    const pontosEVA = calcularPontosEVA(task.titulo);
 
                     if (!pontosPorSprint[task.sprint]) {
                         pontosPorSprint[task.sprint] = {
