@@ -1,7 +1,7 @@
 // Importações de módulos
 const { getUsersFromAPI } = require('../util/apiUtil'); // Função para obter usuários da API externa
 const { userExistsAndUpdate } = require('../repository/UsuarioRepository');
-const {consoleOccinho} = require("../util/ConsoleOccinho"); // Função para verificar e atualizar usuários no repositório
+const { consoleOccinho } = require("../util/ConsoleOccinho"); // Função para verificar e atualizar usuários no repositório
 
 // Função assíncrona para adicionar usuários ao Back4App
 async function addUsersToBack4App(authTokenEva) {
@@ -19,7 +19,7 @@ async function addUsersToBack4App(authTokenEva) {
         consoleOccinho?.timeEnd("executar as verificacoes e atualizacoes de usuarios em paralelo")
         return results.filter(result => result !== null); // Retorna resultados que não sejam nulos (indicando sucesso na atualização)
     } catch (error) {
-        console.error('Erro ao adicionar ou atualizar usuários:', error); // Registra erros ocorridos durante o processo
+        console.error('(Service Usuario) Erro ao adicionar ou atualizar usuários:', error); // Registra erros ocorridos durante o processo
         throw error; // Lança o erro para tratamento externo
     }
 }

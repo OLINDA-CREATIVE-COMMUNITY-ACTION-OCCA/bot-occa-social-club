@@ -8,12 +8,14 @@ const { User } = require('../models/User');
  * @returns {Promise<null|string>}
  */
 async function userExistsAndUpdate(user) {
-    const existingUser = User.findOne({ where: { eva_id: user.id } })
+    const existingUser = await User.findOne({ where: { eva_id: user.id } })
 
     if (existingUser) { // Se o usuário já existir
         // Verifica se o nome atual é diferente do nome no banco de dados
 
-        if (existingUser.eva_name !== user.full_name) {
+        if (existingUser.eva_name !== user.full_name && user.full_name != null) {
+            consoleOccinho?.log("existingUser", existingUser)
+            consoleOccinho?.log("user.full_name", user.full_name)
             await existingUser.update({
                 eva_name: user.full_name
             })
@@ -28,6 +30,8 @@ async function userExistsAndUpdate(user) {
         // }
         return null; // Retorna null se o nome já estiver correto
     } else { // Se o usuário não existir
+        consoleOccinho?.log("existingUser", existingUser)
+        consoleOccinho?.log("user.full_name", user.full_name)
 
         const newUser = await User.create({
             eva_name: user.name,
