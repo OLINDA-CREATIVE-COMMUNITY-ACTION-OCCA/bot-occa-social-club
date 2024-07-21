@@ -1,5 +1,3 @@
-const Parse = require('parse/node'); // Importa o SDK do Parse
-const { User } = require('../models/User');
 /**
  * Atualiza o Back4App com as informações dos novos usuários de eva
  * @param user
@@ -13,7 +11,7 @@ async function userExistsAndUpdate(user) {
 
         if (existingUser.eva_name !== user.full_name && user.full_name != null) {
             await existingUser.update({
-                eva_name: "otoniel"
+                eva_name: user.full_name
             })
             await existingUser.save();
         }
