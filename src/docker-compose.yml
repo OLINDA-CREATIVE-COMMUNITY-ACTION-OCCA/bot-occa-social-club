@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7 # Escolha a versão desejada do MySQL
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Defina sua senha de root aqui
+      MYSQL_DATABASE: ${DB_NAME} # Nome do banco de dados para o bot
+      MYSQL_USER: ${DB_USER} # Nome de usuário do banco de dados
+      MYSQL_PASSWORD: ${DB_PASSWORD} # Senha do usuário do banco de dados
+    ports:
+      - "3306:3306" # Porta do MySQL dentro do container e do host
