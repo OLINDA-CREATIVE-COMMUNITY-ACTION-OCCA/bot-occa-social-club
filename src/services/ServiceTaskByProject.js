@@ -2,8 +2,9 @@
 const axios = require('axios'); // Para requisições HTTP
 const Parse = require('parse/node'); // Para interação com o Parse Server
 const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require('../repository/projetotRepository'); // Funções de acesso aos dados armazenados
-const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
+const { convertAssignerIdsToNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
+const { removeUrls, formatDescription, extractDescriptionModel } = require('../services/ServiceDescription'); // Novas funções de descrição
 const { consoleOccinho } = require('../util/ConsoleOccinho');
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
@@ -29,61 +30,56 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
         ]);
 
         consoleOccinho?.log(logPath, `token de eva é ${authTokenEva}`);
+
         // Requisição para obter os marcos (milestones) da API externa
-        const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
+        const { data: milestonesResponse } = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
             headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
         });
-
-        const milestones = milestonesResponse.data; // Array de marcos recebidos da API
 
         // Expressão regular para verificar se o título contém "[N: <número> X <número>] " com possíveis variações de espaços
         const regexNPrefix = /^\[\s*N\s*:\s*\d+\s*[Xx]\s*\d+\s*]\s?.*$/;
         // Expressão regular para capturar a parte relevante da descrição
         const regexDescriptionModel = /\[N\s*=\s*\d+\s*:\s*[^,\]]+(?:,\s*N\s*=\s*\d+\s*:\s*[^,\]]+)*\]/;
 
-        // Iteração sobre cada marco recebido da API
-        for (const milestone of milestones) {
+        const tasksByProjectMap = new Map(tasksByProjects.map(task => [task.titulo, task]));
+        const storedUsersMap = new Map(storedUsers.map(user => [user.id.toString(), user]));
+        const tasksBatch = [];
+
+        // Processar milestonesResponse em paralelo
+        await Promise.all(milestonesResponse.map(async milestone => {
             const sprintName = sprintNameMap[milestone.slug] || milestone.name; // Nome da sprint mapeado ou nome padrão do marco
 
-            const tasksResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
+            // Requisição para obter as tarefas do marco em paralelo
+            const { data: tasks } = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
                 headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
             });
 
-            const tasks = tasksResponse.data; // Array de projetos recebidos da API
-
-            if (!Array.isArray(tasks)) {
-                throw new Error('A resposta da API não é um array'); // Lança um erro se a resposta não for um array
-            }
-
-            const tasksBatch = []; // Array para registrar promessas de salvamento de projetos
-
-            // Iteração sobre cada projeto recebido da API
-            for (const task of tasks) {
+            await Promise.all(tasks.map(async task => {
                 if (task.subject === 'teste' || task.subject === 'Estudar o codigo (front end) - NOME MEMBRO [8x1][Individual]') {
                     console.log(`Projeto ${task.subject} ignorado.`); // Ignora projetos de teste com o assunto 'teste'
-                    continue;
+                    return;
                 }
 
-                // Requisição adicional para obter a descrição da tarefa
-                const taskDetailResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks/${task.id}`, {
+                // Requisição adicional para obter a descrição da tarefa em paralelo
+                const { data: taskDetail } = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks/${task.id}`, {
                     headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
                 });
 
-                const taskDetail = taskDetailResponse.data; // Detalhes da tarefa, incluindo a descrição
                 const fullDescription = taskDetail.description; // Obtém a descrição completa da tarefa
+                const hasNegotiationModel = regexNPrefix.test(task.subject); // Verifica se o modelo de negociação está presente
+                const formattedDescription = formatDescription(fullDescription, hasNegotiationModel); // Formata a descrição
 
-                // Extrair a parte relevante da descrição
-                const descriptionMatch = fullDescription.match(regexDescriptionModel);
-                const description = descriptionMatch ? descriptionMatch[0] : 'essa tarefa não tem modelo de negociação'; // Se não houver correspondência, define mensagem padrão
+                // Verifica e extrai o modelo de negociação se presente
+                const negotiationModelPresent = regexDescriptionModel.test(fullDescription);
 
-                // Obtém nomes dos assinantes e IDs dos assinantes
-                const assignersNames = getAssignerNames(task.assigners, storedUsers);
-                const assignersIds = convertAssignerNameToId(assignersNames.split(', '), storedUsers);
-                const existingTaskByProject = tasksByProjects.find(taskInDataBase => taskInDataBase.titulo === task.subject);
+                const assignersNames = convertAssignerIdsToNames(task.assigners, storedUsersMap); // Obtém nomes dos assinantes
+                const assignersIds = convertAssignerNameToId(assignersNames.split(', '), storedUsersMap); // Obtém IDs dos assinantes
+
+                const existingTaskByProject = tasksByProjectMap.get(task.subject);
 
                 if (existingTaskByProject) {
                     let changed = false; // Flag para indicar se houve alterações
-                    let changeDetails = `Projeto ${task.subject} atualizado:`; // Detalhes das alterações realizadas
+                    let changeDetails = `**Projeto ${task.subject} atualizado:**`; // Detalhes das alterações realizadas
 
                     // Verifica e atualiza o status do projeto se necessário
                     if (existingTaskByProject.status !== statusMap[task.status]) {
@@ -101,8 +97,8 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
 
                     // Verifica e atualiza os assinantes do projeto se necessário
                     if (existingTaskByProject.assinantes !== assignersIds) {
-                        const oldAssignerNames = convertAssignerIdsToNames(existingTaskByProject.assinantes, storedUsers);
-                        const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
+                        const oldAssignerNames = convertAssignerIdsToNames(existingTaskByProject.assinantes.split(', '), storedUsersMap);
+                        const newAssignerNames = convertAssignerIdsToNames(assignersIds.split(', '), storedUsersMap);
 
                         changeDetails += `\n  - Assinantes: de "${oldAssignerNames}" para "${newAssignerNames}"`;
                         existingTaskByProject.assinantes = assignersIds;
@@ -110,23 +106,15 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
                     }
 
                     // Verifica e atualiza a descrição do projeto
-                    if (regexNPrefix.test(task.subject)) {
-                        // Se o modelo de negociação estiver presente
-                        if (existingTaskByProject.descricao !== fullDescription) {
-                            // Atualiza a descrição completa e mostra apenas o modelo de negociação no log
-                            changeDetails += `\n  - Descrição: de "${existingTaskByProject.descricao}" para "${description}"`;
-                            existingTaskByProject.descricao = fullDescription;
-                            changed = true;
-                        }
-                    } else {
-                        // Se o modelo de negociação não estiver presente
-                        if (existingTaskByProject.descricao !== fullDescription) {
-                            // Atualiza a descrição completa e mostra a mensagem padrão no log
-                            changeDetails += `\n  - Descrição: de "${existingTaskByProject.descricao}" para "essa tarefa não tem modelo de negociação"`;
-                            existingTaskByProject.descricao = fullDescription;
-                            changed = true;
-                        }
+                    if (existingTaskByProject.descricao !== fullDescription) {
+                        const oldDescriptionWithoutUrls = removeUrls(existingTaskByProject.descricao);
+                        changeDetails += `\n  - Descrição: de "${removeUrls(existingTaskByProject.descricao)}" para "${formattedDescription}"`;
+                        existingTaskByProject.descricao = fullDescription;
+                        changed = true;
                     }
+
+                    // Adiciona a informação sobre a presença do modelo de negociação, se aplicável
+                    changeDetails += `\n  - Modelo de Negociação Presente: ${negotiationModelPresent ? 'Sim' : 'Não'}`;
 
                     // Se houver alterações, atualiza o projeto no Parse
                     if (changed) {
@@ -150,24 +138,25 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
                     newTaskByProject.set('sprint', sprintName);
                     newTaskByProject.set('assinantes', assignersIds);
                     newTaskByProject.set('descricao', fullDescription); // Salva a descrição completa no banco de dados
+
                     tasksBatch.push(newTaskByProject.save()); // Adiciona a promessa de salvamento ao array
 
-                    const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
-                    changesLog.push(`Novo projeto adicionado: ${task.subject}\n  - Assinantes: ${newAssignerNames}\n  - Descrição: ${description}`); // Registra o novo projeto no log de mudanças
+                    const newAssignerNames = convertAssignerIdsToNames(assignersIds.split(', '), storedUsersMap);
+                    changesLog.push(`Novo projeto adicionado:\n **${task.subject}** \n  - Assinantes: ${newAssignerNames}\n  - Descrição: ${formattedDescription}\n  - Modelo de Negociação Presente: ${negotiationModelPresent ? 'Sim' : 'Não'}`); // Registra o novo projeto no log de mudanças
                 }
-            }
+            }));
+        }));
 
-            await Promise.all(tasksBatch); // Aguarda todas as promessas de salvamento serem resolvidas
-        }
+        await Promise.all(tasksBatch); // Aguarda todas as promessas de salvamento serem resolvidas
     } catch (error) {
-        consoleOccinho?.log(logPath, `Erro ao obter tarefas por projeto: ${error.message}`); // Registra o erro
-        changesLog.push(`Erro ao obter tarefas por projeto: ${error.message}`); // Adiciona o erro ao log de mudanças
+        console.log(logPath, `Erro ao obter tarefas por projeto: ${error.message}`); // Registra erros no log
+        changesLog.push(`Erro ao obter tarefas por projeto: ${error.message}`); // Adiciona erro ao log de mudanças
     }
 
-    // Exibe o log de mudanças
-    changesLog.forEach(change => consoleOccinho?.log(logPath, change));
+    // Exibe todas as mudanças registradas no log
+    changesLog.forEach(change => console.log(logPath, change));
 
     return changesLog; // Retorna o log de mudanças
 }
 
-module.exports = { addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para uso externo
+module.exports = { addOrUpdateTaskByProjectsToBack4App };
