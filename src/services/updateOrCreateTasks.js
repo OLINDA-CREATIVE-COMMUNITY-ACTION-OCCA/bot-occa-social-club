@@ -1,7 +1,7 @@
-const { where } = require('sequelize');
 const { Task } = require('../models/Task')
+const { axios } = require('axios');
 
-async function updateOrCreateTask(tasksInEva, tasksInDatabase, sprintName) {
+async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintName, storedUsers) {
     const tasksBatch = [];
     /**
     * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
@@ -116,4 +116,4 @@ async function updateOrCreateTask(tasksInEva, tasksInDatabase, sprintName) {
         console.error("Ocorreu um erro na atualização das tarefas", error)
     }
 }
-module.exports = { updateOrCreateTask };
+module.exports = { updateOrCreateTasks };

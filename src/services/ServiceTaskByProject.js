@@ -57,9 +57,10 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
                 throw new Error('A resposta da API não é um array'); // Lança um erro se a resposta não for um array
             }
             updateOrCreateTasks(
-                tasksInEva = tasks,
-                tasksInDatabase = storedTasks,
-                sprintName = sprintName
+                tasks,
+                storedTasks,
+                sprintName,
+                storedUsers 
             );
         }
     } catch (error) {
