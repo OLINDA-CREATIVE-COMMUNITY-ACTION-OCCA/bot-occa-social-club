@@ -81,7 +81,7 @@ async function updateOrCreateTask(tasksInEva, tasksInDatabase, sprintName) {
                     }
                 }
 
-                // Se houver alterações, atualiza o projeto no Parse
+                // Se houver alterações, atualiza as informações no banco de dados
                 if (changed) {
                     existingTask.set({
                         eva_status_number: taskEva.status,
@@ -94,7 +94,7 @@ async function updateOrCreateTask(tasksInEva, tasksInDatabase, sprintName) {
                     changesLog.push(changeDetails); // Registra as alterações no log de mudanças
                 }
             } else {
-                const newTask = User.create({
+                const newTask = Task.create({
                     eva_id: taskEva.id,
                     eva_title: taskEva.subject,
                     eva_assigners_id: assignersIds,

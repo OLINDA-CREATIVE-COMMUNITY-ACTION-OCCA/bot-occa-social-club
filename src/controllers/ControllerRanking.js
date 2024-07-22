@@ -20,16 +20,16 @@ async function getRankingWithSprints() {
             let totalPontosXP = 0; // Total de pontos XP
 
             storedTasks.forEach(task => {
-                if (task.assinantes.includes(user.eva_id) && task.status === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(task.titulo);
+                if (task.eva_assigners_id.includes(user.eva_id) && task.eva_status_name === 'Concluído') {
+                    const pontosEVA = calcularPontosEVA(task.eva_title);
 
-                    if (!pontosPorSprint[task.sprint]) {
-                        pontosPorSprint[task.sprint] = {
+                    if (!pontosPorSprint[task.eva_sprint_name]) {
+                        pontosPorSprint[task.eva_sprint_name] = {
                             pontosEVA: pontosEVA,
                             pontosXP: 0
                         };
                     } else {
-                        pontosPorSprint[task.sprint].pontosEVA += pontosEVA;
+                        pontosPorSprint[task.eva_sprint_name].pontosEVA += pontosEVA;
                     }
 
                     // Incrementa o número de sprints participadas
@@ -80,8 +80,8 @@ async function getRankingWithSprints() {
 
         ranking.sort((a, b) => b.totalPontosXP - a.totalPontosXP); // Ordena o ranking por total de pontos XP
 
-        ranking.forEach((user, index) => {
-            user.posicao = index + 1; // Define a posição no ranking
+        ranking.forEach((userInRaking, index) => {
+            userInRaking.posicao = index + 1; // Define a posição no ranking
         });
 
         return ranking; // Retorna o ranking

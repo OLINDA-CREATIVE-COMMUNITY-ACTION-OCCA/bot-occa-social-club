@@ -1,3 +1,4 @@
+const { User } = require('../models/User');
 /**
  * Atualiza no banco de dados do bot as informações dos novos usuários de eva
  * @param user

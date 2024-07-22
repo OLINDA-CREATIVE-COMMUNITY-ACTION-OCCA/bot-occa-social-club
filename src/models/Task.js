@@ -9,7 +9,6 @@ const Task = sequelize.define(
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            unique: true
         },
         eva_id: {
             type: DataTypes.INTEGER,
@@ -34,8 +33,14 @@ const Task = sequelize.define(
             allowNull: false,
         },
         eva_assigners_id: {
-            type: DataTypes.ARRAY(DataTypes.INTEGER),
-            allowNull: false
+            type: DataTypes.STRING,
+            allowNull: false,
+            get() {
+                this.getDataValue('eva_assigners_id').split(';');
+            },
+            set(val) {
+                this.setDataValue('eva_assigners_id', val.join(';'))
+            }
         },
         eva_description: {
             type: DataTypes.TEXT
