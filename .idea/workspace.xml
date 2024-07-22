@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2719c26b-b9d1-481d-a455-7e83cc49dd95" name="Changes" comment="fix: pass token for the functions that need this">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceNameID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceNameID.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Database.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Database.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +86,7 @@
       <workItem from="1721331568169" duration="118000" />
       <workItem from="1721520720794" duration="618000" />
       <workItem from="1721523005002" duration="26000" />
+      <workItem from="1721600309904" duration="697000" />
     </task>
     <task id="LOCAL-00001" summary="merge with develop, change some names of files and variables for understanding better.">
       <option name="closed" value="true" />

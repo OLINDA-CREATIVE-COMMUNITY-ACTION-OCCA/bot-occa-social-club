@@ -116,3 +116,4 @@ async function updateOrCreateTask(tasksInEva, tasksInDatabase, sprintName) {
         console.error("Ocorreu um erro na atualização das tarefas", error)
     }
 }
+module.exports = { updateOrCreateTask };

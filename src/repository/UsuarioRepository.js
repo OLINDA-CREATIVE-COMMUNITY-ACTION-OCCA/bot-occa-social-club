@@ -1,5 +1,5 @@
 /**
- * Atualiza o Back4App com as informações dos novos usuários de eva
+ * Atualiza no banco de dados do bot as informações dos novos usuários de eva
  * @param user
  * @returns {Promise<null|string>}
  */
