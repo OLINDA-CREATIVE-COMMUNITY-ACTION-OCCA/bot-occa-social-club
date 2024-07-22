@@ -21,15 +21,17 @@ function formatDescription(description, hasNegotiationModel) {
     return `${descriptionWithoutUrls}\n${modelMessage}`;
 }
 
+
 /**
  * Extrai a parte da descrição que corresponde ao modelo de negociação.
  * @param {string} description - A descrição da tarefa.
  * @param {RegExp} regex - A expressão regular para encontrar o modelo de negociação.
  * @returns {string} - A parte da descrição que corresponde ao modelo de negociação.
  */
-function extractDescriptionModel(description, regex) {
-    const match = description.match(regex);
+function extractNegotiationModel(description) {
+    const negotiationRegex = /\[N\s*=\s*\d+\s*:\s*[^,\]]+(?:,\s*N\s*=\s*\d+\s*:\s*[^,\]]+)*\]/;
+    const match = description.match(negotiationRegex);
     return match ? match[0] : '';
 }
 
-module.exports = { removeUrls, formatDescription, extractDescriptionModel };
+module.exports = { removeUrls, formatDescription,  extractNegotiationModel };

@@ -20,7 +20,7 @@ async function getRankingWithSprints() {
 
             storedTasksByProjects.forEach(task => {
                 if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(task.titulo); 
+                    const pontosEVA = calcularPontosEVA(task, user); 
 
                     if (!pontosPorSprint[task.sprint]) {
                         pontosPorSprint[task.sprint] = {

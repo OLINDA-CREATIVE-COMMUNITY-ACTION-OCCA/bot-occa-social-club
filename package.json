@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "axios": "^1.7.2",
-    "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5",
-    "parse": "^5.3.0"
-  }
-}
