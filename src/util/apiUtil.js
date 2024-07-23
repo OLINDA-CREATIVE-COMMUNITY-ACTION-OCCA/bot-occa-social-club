@@ -1,6 +1,5 @@
 const axios = require('axios'); // Importa o módulo axios para fazer requisições HTTP
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
-const { consoleOccinho } = require('./ConsoleOccinho');
 
 /**
  * Função assíncrona para obter usuários da API do EVA
@@ -8,8 +7,6 @@ const { consoleOccinho } = require('./ConsoleOccinho');
  */
 async function getUsersFromAPI(authTokenEva) {
     try {
-        consoleOccinho?.log(`${authTokenEva}`)
-        consoleOccinho?.log(`getUsersFromApi ${'' == authTokenEva}`)
         authTokenEva.then
         const response = await axios.get('https://apiproduction.evastrategy.com/api/v1/users', {
             headers: {

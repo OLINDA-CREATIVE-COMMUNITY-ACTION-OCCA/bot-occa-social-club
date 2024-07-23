@@ -20,10 +20,14 @@ function calcularPontosEVA(task, user) {
       case "I":
         return pontos * multiplicador; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
       case "N":
+        try {
         const negotiationModel = extractNegotiationModel(task.descricao);
-        consoleOccinho?.log(getNegotiationsPoints(negotiationModel));
+        consoleOccinho?.log("points = ", getNegotiationsPoints(negotiationModel, user.nome));
         const points = getNegotiationsPoints(negotiationModel, user.nome);
         return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA
+        } catch(error) {
+            console.error(error)
+        }
       default:
         return 0; // Retorna 0 pontos EVA se não houver correspondência
     }
@@ -35,10 +39,10 @@ function calcularPontosEVA(task, user) {
 /**
  * 
  * @param {*} model string com o modelo de negociação
- * @param {*} eva_user_name nome do usuário em eva
+ * @param {*} evaUserName nome do usuário em eva
  * @returns quantos pontos o usuário recebeu em certa negociação
  */
-function getNegotiationsPoints(model, eva_user_name) {
+function getNegotiationsPoints(model, evaUserName) {
     consoleOccinho?.log("model =", model);
   const usersAndPoints = model.split(",");
   const regexFullNameEva = /[a-zA-Z\u00C0-\u017F]+( [a-zA-Z\u00C0-\u017F]+)+/;
@@ -47,12 +51,14 @@ function getNegotiationsPoints(model, eva_user_name) {
     consoleOccinho?.log(userAndPoints)
     const name = userAndPoints.split(":")[1].match(regexFullNameEva)[0];
 
-    if(name == eva_user_name) {
+    if(name.toLowerCase() == evaUserName.toLowerCase()) {
         const points = userAndPoints.split(":")[0].match(regexDigit)[0];
         return points
     }
   }
-  return -1;
+
+  throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
+  return 0 ;
 }
 
 /**

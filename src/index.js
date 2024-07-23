@@ -25,7 +25,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN); //
 
 (async () => {
     try {
-        consoleOccinho?.log("Pegando a chave da api de eva")
+        console.log("Pegando a chave da api de eva")
         authTokenEva = await getAuthToken(process.env.EMAIL, process.env.PASSWORD)
         console.log('Registrando comandos de barra...');
         await rest.put( // Registra os comandos de barra

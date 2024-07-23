@@ -1,6 +1,4 @@
 const axios = require('axios'); // Importa o módulo axios para fazer requisições HTTP
-const { consoleOccinho } = require('./ConsoleOccinho');
-
 
 /**
  * Essa função pega o token de autoriazação do eva e precisa ser chamada logo no inicio do index.js
@@ -15,7 +13,6 @@ async function getAuthToken(user, password) {
             "username": `${user}`
         });
         const authTokenEva = response.data.auth_token
-        consoleOccinho?.log(authTokenEva);
         return authTokenEva
     } catch (error) {
         console.error('Erro ao tentar pegar o Token:', error)

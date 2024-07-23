@@ -29,8 +29,6 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
             fetchStoredUsers()
         ]);
 
-        consoleOccinho?.log(logPath, `token de eva é ${authTokenEva}`);
-
         // Requisição para obter os marcos (milestones) da API externa
         const { data: milestonesResponse } = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
             headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
