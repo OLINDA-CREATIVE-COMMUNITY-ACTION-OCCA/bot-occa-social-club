@@ -1,3 +1,4 @@
+const { fetchStoredUsers } = require("../models/Usuario");
 const { consoleOccinho } = require("../util/ConsoleOccinho");
 const { extractNegotiationModel } = require("./ServiceDescription");
 
@@ -9,11 +10,9 @@ const { extractNegotiationModel } = require("./ServiceDescription");
 function calcularPontosEVA(task, user) {
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = task.titulo.match(negotiateTitleRegex);
+    const taskTotalPoints = getTaskTotalPoints(task.titulo);
 
     if (match) {
-        const pontos = parseInt(match[2], 10); // Extrai o número de pontos do título
-        const multiplicador = parseFloat(match[3]); // Extrai o multiplicador do título
-        const taskTotalPoints = pontos * multiplicador;
         
         switch (match[1].toUpperCase()) {
             case "G":
@@ -63,6 +62,31 @@ function getNegotiationsPointsForUser(model, evaUserName) {
     }
 
     throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
+}
+
+function getTaskTotalPoints(taskTitle) {
+    const titleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
+    const match = taskTitle.match(titleRegex);
+    try {
+        const pontos = parseInt(match[2], 10); // Extrai o número de pontos do título
+        const multiplicador = parseFloat(match[3]); // Extrai o multiplicador do título
+        const taskTotalPoints = pontos * multiplicador;
+        return taskTotalPoints;
+    } catch (err) {
+        console.log(`Erro no tipo de tarefa no titulo: ${err}`);
+        return 0;
+    }
+}
+
+async function validateNegociation(task) {
+    const taskTotalpoints = getTaskTotalPoints(task.titulo);
+    const users = await fetchStoredUsers();
+    const usersAssigners = [];
+    for (let idUser in task.assinantes) {
+        const userName = users.find((user) => user == idUser).nome;
+        usersAssigners.append(userName);
+    }
+    // const userTotalPoints = getNegotiationsPointsForUser(negotiationModel, task.assinantes); 
 }
 
 /**
