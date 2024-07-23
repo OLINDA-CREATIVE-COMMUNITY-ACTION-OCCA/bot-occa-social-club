@@ -13,19 +13,20 @@ function calcularPontosEVA(task, user) {
     if (match) {
         const pontos = parseInt(match[2], 10); // Extrai o número de pontos do título
         const multiplicador = parseFloat(match[3]); // Extrai o multiplicador do título
-
+        const taskTotalPoints = pontos * multiplicador;
+        
         switch (match[1].toUpperCase()) {
             case "G":
-                return pontos * multiplicador; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
+                return taskTotalPoints; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
             case "I":
-                return pontos * multiplicador; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
+                return taskTotalPoints; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
             case "N":
                 try {
                     const negotiationModel = extractNegotiationModel(task.descricao);
                     if (negotiationModel !== '') {
                         const points = getNegotiationsPoints(negotiationModel, user.nome);
                         consoleOccinho?.log("points = ", points);
-                        return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA   
+                        return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
                     } else {
                         console.log(`A Tarefa: ${task.titulo} ainda não foi negociada!!!`);
                     }
@@ -57,12 +58,11 @@ function getNegotiationsPoints(model, evaUserName) {
 
         if (name.toLowerCase() == evaUserName.toLowerCase()) {
             const points = userAndPoints.split(":")[0].match(regexDigit)[0];
-            return points
+            return parseInt(points);
         }
     }
 
     throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
-    return 0;
 }
 
 /**
