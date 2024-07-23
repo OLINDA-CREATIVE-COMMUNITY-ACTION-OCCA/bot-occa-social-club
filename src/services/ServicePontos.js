@@ -23,7 +23,7 @@ function calcularPontosEVA(task, user) {
                 try {
                     const negotiationModel = extractNegotiationModel(task.descricao);
                     if (negotiationModel !== '') {
-                        const points = getNegotiationsPoints(negotiationModel, user.nome);
+                        const points = getNegotiationsPointsForUser(negotiationModel, user.nome);
                         consoleOccinho?.log("points = ", points);
                         return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA   
                     } else {
@@ -46,7 +46,7 @@ function calcularPontosEVA(task, user) {
  * @param {*} evaUserName nome do usuário em eva
  * @returns quantos pontos o usuário recebeu em certa negociação
  */
-function getNegotiationsPoints(model, evaUserName) {
+function getNegotiationsPointsForUser(model, evaUserName) {
     consoleOccinho?.log("model =", model);
     const usersAndPoints = model.split(",");
     const regexFullNameEva = /[a-zA-Z\u00C0-\u017F]+( [a-zA-Z\u00C0-\u017F]+)+/;
@@ -57,12 +57,16 @@ function getNegotiationsPoints(model, evaUserName) {
 
         if (name.toLowerCase() == evaUserName.toLowerCase()) {
             const points = userAndPoints.split(":")[0].match(regexDigit)[0];
-            return points
+            return parseInt(points)
         }
     }
 
     throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
     return 0;
+}
+
+function validateNegociation(task) {
+  
 }
 
 /**
