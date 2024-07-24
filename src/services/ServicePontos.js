@@ -7,7 +7,7 @@ const { extractNegotiationModel } = require("./ServiceDescription");
  * @param {string} titulo
  * @returns
  */
-function calcularPontosEVA(task, user) {
+async function calcularPontosEVA(task, user) {
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = task.titulo.match(negotiateTitleRegex);
     const taskTotalPoints = getTaskTotalPoints(task.titulo);
@@ -15,7 +15,7 @@ function calcularPontosEVA(task, user) {
     if (match) {
         
         switch (match[1].toUpperCase()) {
-            case "G":
+            case "G": 
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
             case "I":
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
@@ -23,9 +23,13 @@ function calcularPontosEVA(task, user) {
                 try {
                     const negotiationModel = extractNegotiationModel(task.descricao);
                     if (negotiationModel !== '') {
-                        const points = getNegotiationsPointsForUser(negotiationModel, user.nome);
-                        consoleOccinho?.log("points = ", points);
-                        return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
+                        if (await validateNegociation(task)) {
+                            const points = getNegotiationsPointsForUser(negotiationModel, user.nome);
+                            consoleOccinho?.log("points = ", points);
+                            return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
+                        } else {
+                            console.log("ERRO! A divisão de pontos está maior que a pontuação total da tarefa.")
+                        }
                     } else {
                         console.log(`A Tarefa: ${task.titulo} ainda não foi negociada!!!`);
                     }
@@ -82,11 +86,27 @@ async function validateNegociation(task) {
     const taskTotalpoints = getTaskTotalPoints(task.titulo);
     const users = await fetchStoredUsers();
     const usersAssigners = [];
-    for (let idUser in task.assinantes) {
-        const userName = users.find((user) => user == idUser).nome;
-        usersAssigners.append(userName);
+    const usersTotalPoints = [];
+    const negotiationModel = extractNegotiationModel(task.descricao);
+    const assinantes = task.assinantes.split(", ");
+
+    for (let idUser of assinantes) {
+        const userName = users.find((user) => user.id == idUser);
+        usersAssigners.push(userName.nome);
     }
-    // const userTotalPoints = getNegotiationsPointsForUser(negotiationModel, task.assinantes); 
+
+    for (let user of usersAssigners) {
+        const userNegotiatePoints = getNegotiationsPointsForUser(negotiationModel, user);
+        usersTotalPoints.push(userNegotiatePoints);
+    }
+
+    const totalNegotiatePoints = usersTotalPoints.reduce((totalPoints, userPoint) => totalPoints + userPoint, 0);
+
+    if (totalNegotiatePoints > taskTotalpoints) {
+        return false
+    } else {
+        return true
+    }
 }
 
 /**
