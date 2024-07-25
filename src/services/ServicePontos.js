@@ -15,7 +15,7 @@ async function calcularPontosEVA(task, user) {
     if (match) {
         
         switch (match[1].toUpperCase()) {
-            case "G": 
+            case "G":
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
             case "I":
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA

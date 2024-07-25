@@ -24,9 +24,9 @@ function calcularRanking(storedProjects, storedUsers) {
       const pontosEVA = 0;
 
       // Itera sobre cada assinante do projeto
-      task.assinantes.forEach((userId) => {
+      task.assinantes.forEach(async (userId) => {
         const user = storedUsers.find((user) => user.id == userId);
-        pontosEVA = calcularPontosEVA(task, user);
+        pontosEVA = await calcularPontosEVA(task, user);
 
         if (!pontosPorUsuario.has(userId)) {
           pontosPorUsuario.set(userId, {

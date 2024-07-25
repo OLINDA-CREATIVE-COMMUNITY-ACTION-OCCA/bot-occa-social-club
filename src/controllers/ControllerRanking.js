@@ -18,9 +18,9 @@ async function getRankingWithSprints() {
             let totalPontosEVA = 0; // Total de pontos EVA
             let totalPontosXP = 0; // Total de pontos XP
 
-            storedTasksByProjects.forEach(task => {
+            storedTasksByProjects.forEach(async task => {
                 if (task.assinantes.includes(user.id) && task.status === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(task, user); 
+                    const pontosEVA = await calcularPontosEVA(task, user); 
 
                     if (!pontosPorSprint[task.sprint]) {
                         pontosPorSprint[task.sprint] = {
