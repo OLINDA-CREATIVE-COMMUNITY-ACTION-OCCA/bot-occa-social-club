@@ -10,10 +10,9 @@ const { extractNegotiationModel } = require("./ServiceDescription");
 async function calcularPontosEVA(task, user) {
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = task.titulo.match(negotiateTitleRegex);
-    const taskTotalPoints = getTaskTotalPoints(task.titulo);
-
+    
     if (match) {
-        
+        const taskTotalPoints = getTaskTotalPoints(task.titulo);
         switch (match[1].toUpperCase()) {
             case "G":
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
