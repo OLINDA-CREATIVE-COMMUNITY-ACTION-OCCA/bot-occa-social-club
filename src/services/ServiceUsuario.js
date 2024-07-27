@@ -19,7 +19,7 @@ async function addUsersToBack4App(authTokenEva) {
         consoleOccinho?.timeEnd("executar as verificacoes e atualizacoes de usuarios em paralelo")
         return results.filter(result => result !== null); // Retorna resultados que não sejam nulos (indicando sucesso na atualização)
     } catch (error) {
-        console.error('(Service Usuario) Erro ao adicionar ou atualizar usuários:', error); // Registra erros ocorridos durante o processo
+        console.error('(Service User) Erro ao adicionar ou atualizar usuários:', error); // Registra erros ocorridos durante o processo
         throw error; // Lança o erro para tratamento externo
     }
 }

@@ -1,4 +1,4 @@
-const { fetchStoredUsers } = require("../models/Usuario");
+const { fetchStoredUsers } = require("../models/User");
 const { consoleOccinho } = require("../util/ConsoleOccinho");
 const { extractNegotiationModel } = require("./ServiceDescription");
 
