@@ -13,15 +13,15 @@ async function getRankingWithSprints() {
         */
         const ranking = [];
 
-        storedUsers.forEach(user => {
+        for (const user of storedUsers) {
             const pontosPorSprint = {}; // Objeto para armazenar pontos por sprint
             let numeroSprintsParticipadas = 0; // Contador de sprints participadas
             let totalPontosEVA = 0; // Total de pontos EVA
             let totalPontosXP = 0; // Total de pontos XP
 
-            storedTasks.forEach(task => {
+            for (const task of storedTasks) {
                 if (task.eva_assigners_id.includes(user.eva_id) && task.eva_status_name === 'Concluído') {
-                    const pontosEVA = calcularPontosEVA(task.eva_title);
+                    const pontosEVA = await calcularPontosEVA(task.eva_title);
 
                     if (!pontosPorSprint[task.eva_sprint_name]) {
                         pontosPorSprint[task.eva_sprint_name] = {
@@ -35,7 +35,7 @@ async function getRankingWithSprints() {
                     // Incrementa o número de sprints participadas
                     numeroSprintsParticipadas++;
                 }
-            });
+            }
 
             const sprints = Object.keys(pontosPorSprint); // Obtém as chaves (sprints)
             sprints.sort((a, b) => { // Ordena as sprints numericamente
@@ -59,11 +59,18 @@ async function getRankingWithSprints() {
                 } else if (index >= 2) {
                     // Terceira sprint em diante: média da atual, última e penúltima
                     const pontosEVAAtual = pontosPorSprint[sprint].pontosEVA;
-                    const pontosEVAPassada = pontosPorSprint[sprints[index - 1]].pontosEVA;
-                    const pontosEVAPenultima = pontosPorSprint[sprints[index - 2]].pontosEVA;
+                    const pontosEVAPassada =
+                        pontosPorSprint[sprints[index - 1]].pontosEVA;
+                    const pontosEVAPenultima =
+                        pontosPorSprint[sprints[index - 2]].pontosEVA;
 
-                    mediaPontosEVA = (pontosEVAAtual + pontosEVAPassada + pontosEVAPenultima) / 3;
-                    pontosXP = calcularPontosXP(pontosEVA, mediaPontosEVA, numeroSprintsParticipadas);
+                    mediaPontosEVA =
+                        (pontosEVAAtual + pontosEVAPassada + pontosEVAPenultima) / 3;
+                    pontosXP = calcularPontosXP(
+                        pontosEVA,
+                        mediaPontosEVA,
+                        numeroSprintsParticipadas
+                    );
                 }
 
                 pontosPorSprint[sprint].pontosXP = pontosXP; // Armazena pontos XP para a sprint
@@ -76,7 +83,7 @@ async function getRankingWithSprints() {
                 totalPontosXP: totalPontosXP,
                 pontosPorSprint: pontosPorSprint
             });
-        });
+        }
 
         ranking.sort((a, b) => b.totalPontosXP - a.totalPontosXP); // Ordena o ranking por total de pontos XP
 

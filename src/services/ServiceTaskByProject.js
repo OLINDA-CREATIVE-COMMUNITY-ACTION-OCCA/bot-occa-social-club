@@ -1,14 +1,12 @@
 // Importações de módulos e configuração inicial
 const axios = require('axios'); // Para requisições HTTP
 const Parse = require('parse/node'); // Para interação com o Parse Server
+const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require('../repository/projetotRepository'); // Funções de acesso aos dados armazenados
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
 const { consoleOccinho } = require('../util/ConsoleOccinho');
-const { User } = require('../models/User')
+const {updateOrCreateTasks} = require("./updateOrCreateTasks");
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
-const { Task } = require('../models/Task');
-const { updateOrCreateTasks } = require('./updateOrCreateTasks');
-const { update } = require('parse/lib/browser/ParseHooks');
 
 const logPath = "ServiceTaskByProject";
 
@@ -16,7 +14,7 @@ const logPath = "ServiceTaskByProject";
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
  */
-async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
+async function addOrUpdateTasks(authTokenEva) {
     /**
      * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
      * @type {*[string]}
@@ -25,9 +23,10 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
 
     try {
         // Obtenção de sprints e projetos armazenados e usuários do Parse
-        const [storedTasks, storedUsers] = await Promise.all([
-            Task.findAll(),
-            User.findAll()
+        const [storedSprints, tasksFromDatabase, storedUsers] = await Promise.all([
+            getStoredSprints(),
+            getStoredTasksByProjects(),
+            fetchStoredUsers()
         ]);
 
         consoleOccinho?.log(logPath, `token de eva é ${authTokenEva}`);
@@ -51,14 +50,14 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
                 headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
             });
 
-            const tasks = tasksResponse.data; // Array de projetos recebidos da API
+            const tasksFromAPI = tasksResponse.data; // Array de projetos recebidos da API
 
-            if (!Array.isArray(tasks)) {
+            if (!Array.isArray(tasksFromAPI)) {
                 throw new Error('A resposta da API não é um array'); // Lança um erro se a resposta não for um array
             }
-            updateOrCreateTasks(
-                tasks,
-                storedTasks,
+            await updateOrCreateTasks(
+                tasksFromAPI,
+                tasksFromDatabase,
                 sprintName,
                 storedUsers 
             );
@@ -74,4 +73,4 @@ async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
     return changesLog; // Retorna o log de mudanças
 }
 
-module.exports = { addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para uso externo
+module.exports = { addOrUpdateTaskByProjectsToBack4App: addOrUpdateTasks }; // Exporta a função para uso externo
