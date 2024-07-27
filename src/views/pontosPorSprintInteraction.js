@@ -2,7 +2,7 @@
 const { getRankingWithSprints } = require('../controllers/ControllerRanking');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const {addUsersToBack4App} = require('../services/ServiceUsuario')
+const { addUsersToBack4App } = require('../services/ServiceUsuario')
 async function updateData(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
@@ -34,13 +34,13 @@ async function handlePointsBySprintInteraction(interaction, authTokenEva) {
         // Atualiza os dados antes de obter os pontos por sprint
         const updateMessage = await updateData(authTokenEva);
         // Obtém o ranking com sprints
-        const rankingComSprints = await getRankingWithSprints();
+        const rankingComSprints = await getRankingWithSprints(interaction);
 
         // Verifica se o ranking tem dados
         if (rankingComSprints.length > 0) {
             // Inicializa a mensagem de resposta
             let pontosPorSprintMessage = '\n**Pontos de Eva por assinante:**\n\n';
-    
+
 
             // Itera sobre os usuários no ranking
             for (const usuario of rankingComSprints) {
@@ -60,7 +60,7 @@ async function handlePointsBySprintInteraction(interaction, authTokenEva) {
                 // Se a mensagem exceder 1900 caracteres, envia a mensagem e reinicia
                 if (pontosPorSprintMessage.length > 1900) {
                     await sendLongMessage(interaction, pontosPorSprintMessage.trim());
-                    pontosPorSprintMessage = ''; 
+                    pontosPorSprintMessage = '';
                 }
             }
 

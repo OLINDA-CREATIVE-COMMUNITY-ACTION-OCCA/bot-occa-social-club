@@ -2,7 +2,7 @@
 const { getRankingWithSprints } = require('../controllers/ControllerRanking');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const {addUsersToBack4App} =require('../services/ServiceUsuario')
+const { addUsersToBack4App } = require('../services/ServiceUsuario')
 
 async function updateData(authTokenEva) {
     try {
@@ -38,7 +38,7 @@ async function handleRankingInteraction(interaction, authTokenEva) {
         // Atualiza os dados antes de obter o ranking
         const updateMessage = await updateData(authTokenEva);
         // Obtém o ranking com sprints
-        const ranking = await getRankingWithSprints();
+        const ranking = await getRankingWithSprints(interaction);
 
         // Verifica se o ranking tem dados
         if (ranking.length > 0) {

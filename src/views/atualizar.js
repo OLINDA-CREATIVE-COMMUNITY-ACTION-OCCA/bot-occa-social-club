@@ -2,7 +2,7 @@
 const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const { addUsersToBack4App } = require('../services/ServiceUsuario');
 const { sendLongMessage } = require('../services/ServiceMensagens');
-const {consoleOccinho} = require("../util/ConsoleOccinho");
+const { consoleOccinho } = require("../util/ConsoleOccinho");
 
 const logPath = "autalizar.js"
 

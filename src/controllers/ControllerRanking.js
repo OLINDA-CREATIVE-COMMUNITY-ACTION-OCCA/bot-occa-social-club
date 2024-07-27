@@ -6,7 +6,7 @@ const {
 } = require("../services/ServicePontos"); // Importa funções para calcular pontos EVA e XP
 const { consoleOccinho } = require("../util/ConsoleOccinho");
 
-async function getRankingWithSprints() {
+async function getRankingWithSprints(interaction) {
     try {
         const storedTasksByProjects = await getStoredTasksByProjects(); // Obtém projetos armazenados
         const storedUsers = await fetchStoredUsers(); // Obtém usuários armazenados
