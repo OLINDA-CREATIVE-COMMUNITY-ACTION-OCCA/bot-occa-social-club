@@ -7,10 +7,11 @@ const { extractNegotiationModel } = require("./ServiceDescription");
  * @param {string} titulo
  * @returns
  */
-async function calcularPontosEVA(task, user) {
+async function calcularPontosEVA(task, user, interaction) {
+    await interaction.deferReply();
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = task.titulo.match(negotiateTitleRegex);
-    
+
     if (match) {
         const taskTotalPoints = getTaskTotalPoints(task.titulo);
         switch (match[1].toUpperCase()) {
@@ -27,10 +28,10 @@ async function calcularPontosEVA(task, user) {
                             consoleOccinho?.log("points = ", points);
                             return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
                         } else {
-                            console.log("ERRO! A divisão de pontos está maior que a pontuação total da tarefa.")
+                            await interaction.followUp("ERRO! A divisão de pontos está maior que a pontuação total da tarefa.")
                         }
                     } else {
-                        console.log(`A Tarefa: ${task.titulo} ainda não foi negociada!!!`);
+                        await interaction.followUp(`A Tarefa: ${task.titulo} ainda não foi negociada!!!`);
                     }
                 } catch (error) {
                     console.error(error)

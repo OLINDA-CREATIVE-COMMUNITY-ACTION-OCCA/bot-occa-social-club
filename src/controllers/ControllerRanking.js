@@ -1,10 +1,10 @@
-const {getStoredTasksByProjects} = require("../models/TasksByProjects"); // Importa a função para obter projetos armazenados
-const {fetchStoredUsers} = require("../models/Usuario"); // Importa a função para obter usuários armazenados
+const { getStoredTasksByProjects } = require("../models/TasksByProjects"); // Importa a função para obter projetos armazenados
+const { fetchStoredUsers } = require("../models/Usuario"); // Importa a função para obter usuários armazenados
 const {
     calcularPontosEVA,
     calcularPontosXP,
 } = require("../services/ServicePontos"); // Importa funções para calcular pontos EVA e XP
-const {consoleOccinho} = require("../util/ConsoleOccinho");
+const { consoleOccinho } = require("../util/ConsoleOccinho");
 
 async function getRankingWithSprints() {
     try {
@@ -24,7 +24,7 @@ async function getRankingWithSprints() {
 
             for (const task of storedTasksByProjects) {
                 if (task.assinantes.includes(user.id) && task.status === "Concluído") {
-                    const pontosEVA = await calcularPontosEVA(task, user)
+                    const pontosEVA = await calcularPontosEVA(task, user, interaction)
                     if (!pontosPorSprint[task.sprint]) {
                         pontosPorSprint[task.sprint] = {
                             pontosEVA: pontosEVA,
@@ -101,4 +101,4 @@ async function getRankingWithSprints() {
     }
 }
 
-module.exports = {getRankingWithSprints}; // Exporta a função para ser utilizada em outros módulos
+module.exports = { getRankingWithSprints }; // Exporta a função para ser utilizada em outros módulos
