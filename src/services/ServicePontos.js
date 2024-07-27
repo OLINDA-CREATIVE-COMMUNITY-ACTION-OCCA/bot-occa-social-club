@@ -1,11 +1,13 @@
-const { fetchStoredUsers } = require("../models/User");
+const {  User } = require("../models/User");
 const { consoleOccinho } = require("../util/ConsoleOccinho");
 const { extractNegotiationModel } = require("./ServiceDescription");
 
 /**
  *  Função para calcular pontos EVA com base no título do projeto
- * @param {string} titulo
  * @returns
+ * @param task
+ * @param user
+ * @param interaction
  */
 async function calcularPontosEVA(task, user, interaction) {
     await interaction.deferReply();
@@ -23,7 +25,7 @@ async function calcularPontosEVA(task, user, interaction) {
                 try {
                     const negotiationModel = extractNegotiationModel(task.descricao);
                     if (negotiationModel !== '') {
-                        if (await validateNegociation(task)) {
+                        if (await validateNegotiation(task)) {
                             const points = getNegotiationsPointsForUser(negotiationModel, user.nome);
                             consoleOccinho?.log("points = ", points);
                             return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
@@ -59,7 +61,7 @@ function getNegotiationsPointsForUser(model, evaUserName) {
         consoleOccinho?.log(userAndPoints)
         const name = userAndPoints.split(":")[1].match(regexFullNameEva)[0];
 
-        if (name.toLowerCase() == evaUserName.toLowerCase()) {
+        if (name.toLowerCase() === evaUserName.toLowerCase()) {
             const points = userAndPoints.split(":")[0].match(regexDigit)[0];
             return parseInt(points);
         }
@@ -82,16 +84,16 @@ function getTaskTotalPoints(taskTitle) {
     }
 }
 
-async function validateNegociation(task) {
+async function validateNegotiation(task) {
     const taskTotalpoints = getTaskTotalPoints(task.titulo);
-    const users = await fetchStoredUsers();
+    const users = await User.findAll();
     const usersAssigners = [];
     const usersTotalPoints = [];
     const negotiationModel = extractNegotiationModel(task.descricao);
     const assinantes = task.assinantes.split(", ");
 
     for (let idUser of assinantes) {
-        const userName = users.find((user) => user.id == idUser);
+        const userName = users.find((user) => user.id === idUser);
         usersAssigners.push(userName.nome);
     }
 
@@ -102,11 +104,7 @@ async function validateNegociation(task) {
 
     const totalNegotiatePoints = usersTotalPoints.reduce((totalPoints, userPoint) => totalPoints + userPoint, 0);
 
-    if (totalNegotiatePoints > taskTotalpoints) {
-        return false
-    } else {
-        return true
-    }
+    return totalNegotiatePoints <= taskTotalpoints;
 }
 
 /**

@@ -3,28 +3,6 @@ const { getRankingWithSprints } = require('../controllers/ControllerRanking');
 const { sendLongMessage } = require('../services/ServiceMensagens');
 const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
 const {addUsersToBack4App} = require('../services/ServiceUsuario')
-async function updateData(authTokenEva) {
-    try {
-        // Execute as funções de atualização em paralelo
-        const [newUsers, changes] = await Promise.all([addUsersToBack4App(authTokenEva), addOrUpdateTaskByProjectsToBack4App(authTokenEva)]);
-        let responseMessage = '';
-
-        if (newUsers.length > 0) {
-            responseMessage += `Novos usuários adicionados ou atualizados:\n${newUsers.join('\n')}\n\n`;
-        }
-
-        if (changes.length > 0) {
-            responseMessage += `Projetos atualizados:\n${changes.join('\n')}`;
-        } else {
-            responseMessage += 'Nenhuma mudança detectada nos projetos.';
-        }
-
-        return responseMessage;
-    } catch (error) {
-        console.error('Erro ao atualizar dados:', error);
-        throw new Error('Erro ao atualizar dados');
-    }
-}
 
 // Função assíncrona para lidar com a interação de pontos por sprint
 async function handlePointsBySprintInteraction(interaction, authTokenEva) {
