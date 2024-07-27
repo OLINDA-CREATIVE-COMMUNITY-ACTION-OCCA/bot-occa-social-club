@@ -1,6 +1,7 @@
 .env
 /node_modules
 .idea
+.idea/workspace.xml
 package-lock.json
 # Default ignored files
 /shelf/
