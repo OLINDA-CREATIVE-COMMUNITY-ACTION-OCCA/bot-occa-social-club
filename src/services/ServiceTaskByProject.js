@@ -27,7 +27,7 @@ export async function addOrUpdateTasks(authTokenEva) {
         const [storedSprints, tasksFromDatabase, storedUsers] = await Promise.all([
             Sprint.findAll(),
             Task.findAll(),
-            fetchStoredUsers()
+            User.findAll()
         ]);
 
         consoleOccinho?.log(logPath, `token de eva é ${authTokenEva}`);
@@ -60,7 +60,8 @@ export async function addOrUpdateTasks(authTokenEva) {
                 tasksFromAPI,
                 tasksFromDatabase,
                 sprintName,
-                storedUsers 
+                storedUsers,
+                authTokenEva
             );
         }
     } catch (error) {

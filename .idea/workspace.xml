@@ -4,92 +4,52 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2719c26b-b9d1-481d-a455-7e83cc49dd95" name="Changes" comment="fix: pass token for the functions that need this">
+    <list default="true" id="14592643-cdfe-4dcd-a058-a2d4c9000c91" name="Changes" comment="fix: Database importing the environment variables">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Sprint.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Sprint.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/SprintRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/SprintRepository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/projetotRepository.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceDescription.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceDescription.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceMensagens.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceMensagens.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceNameID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceNameID.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServicePontos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServicePontos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceSprint.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceUsuario.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceUsuario.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/ConsoleOccinho.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/ConsoleOccinho.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Database.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Database.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/apiUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/apiUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/authToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/authToken.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/atualizar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/atualizar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/pontosPorSprintInteraction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pontosPorSprintInteraction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/ranking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/ranking.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="JavaScript File" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="feature/negotiated-task" />
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="62d525d2af2df0a45d344972976397b58244f204" />
+        <entry key="$PROJECT_DIR$" value="feature/use-mysql" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;victorYghor&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "victorYghor"
   }
-}</component>
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/OLINDA-CREATIVE-COMMUNITY-ACTION-OCCA/bot-occa-social-club.git&quot;,
     &quot;accountId&quot;: &quot;117f70dd-26ac-484b-87e4-bc5511ad4f18&quot;
   }
 }</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
-  <component name="ProjectId" id="2j3WCvAj5MRlRHPjkKaeZeT4EtG" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2jtVgk3GHBGzh9QKapFuap9dMbZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Node.js.ConsoleOccinho.js.executor": "Run",
+    "Docker.src.db: Compose Deployment.executor": "Run",
     "Node.js.Database.js.executor": "Run",
-    "Node.js.ServiceTaskByProject.js.executor": "Run",
-    "Node.js.UsuarioRepository.js.executor": "Run",
-    "Node.js.authToken.js.executor": "Run",
     "Node.js.index.js.executor": "Run",
-    "Node.js.pontosPorSprintInteraction.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feature/use-mysql",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/vitor-yghor/Documents/occa/bot-occa-social-club",
     "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
@@ -97,72 +57,58 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="src.db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="services">
+            <list>
+              <option value="db" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="src/docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.src.db: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="2719c26b-b9d1-481d-a455-7e83cc49dd95" name="Changes" comment="" />
-      <created>1720616126388</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1720616126388</updated>
-      <workItem from="1720616130117" duration="8498000" />
-      <workItem from="1721054077049" duration="4396000" />
-      <workItem from="1721164625010" duration="1390000" />
-      <workItem from="1721233763413" duration="2412000" />
-      <workItem from="1721236200887" duration="479000" />
-      <workItem from="1721236681896" duration="516000" />
-      <workItem from="1721237213986" duration="48000" />
-      <workItem from="1721331568169" duration="118000" />
-      <workItem from="1721520720794" duration="618000" />
-      <workItem from="1721523005002" duration="26000" />
-      <workItem from="1721600309904" duration="697000" />
-    </task>
-    <task id="LOCAL-00001" summary="merge with develop, change some names of files and variables for understanding better.">
+    <task id="LOCAL-00001" summary="fix: Database importing the environment variables">
       <option name="closed" value="true" />
-      <created>1720618458672</created>
+      <created>1722206424435</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1720618458672</updated>
+      <updated>1722206424435</updated>
     </task>
-    <task id="LOCAL-00002" summary="feture: create a log utility for hide logs in the production envoriment and refator project to tasksByProject">
-      <option name="closed" value="true" />
-      <created>1720622982255</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1720622982255</updated>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14592643-cdfe-4dcd-a058-a2d4c9000c91" name="Changes" comment="fix: Database importing the environment variables" />
+      <created>1722206475960</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1722206475960</updated>
+      <workItem from="1722206478851" duration="365000" />
     </task>
-    <task id="LOCAL-00003" summary="fix: pass token for the functions that need this">
-      <option name="closed" value="true" />
-      <created>1721235928044</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1721235928045</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="develop" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -174,20 +120,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="merge with develop, change some names of files and variables for understanding better." />
-    <MESSAGE value="feture: create a log utility for hide logs in the production envoriment and refator project to tasksByProject" />
-    <MESSAGE value="fix: pass token for the functions that need this" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: pass token for the functions that need this" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/services/ServiceTaskByProject.js</url>
-          <line>23</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="fix: Database importing the environment variables" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Database importing the environment variables" />
   </component>
 </project>

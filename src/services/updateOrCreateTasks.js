@@ -1,8 +1,25 @@
 import Task from '../models/Task.js';
 import axios  from 'axios';
+import {convertAssignerNameToId} from "./ServiceNameID.js";
 
-export async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintName, storedUsers) {
+/**
+ *
+ * @param tasksInEva
+ * @param tasksInDatabase
+ * @param sprintName
+ * @param storedUsers
+ * @param authTokenEva
+ * @returns {Promise<void>}
+ */
+export async function updateOrCreateTasks(tasksInEva,
+                                          tasksInDatabase,
+                                          sprintName,
+                                          storedUsers,
+                                          authTokenEva) {
     const tasksBatch = [];
+    const regexDescriptionModel = /\[N\s*=\s*\d+\s*:\s*[^,\]]+(?:,\s*N\s*=\s*\d+\s*:\s*[^,\]]+)*]/;
+    const regexNPrefix = /^\[\s*N\s*:\s*\d+\s*[Xx]\s*\d+\s*]\s?.*$/;
+
     /**
     * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
  * @type {*[string]}
@@ -23,6 +40,7 @@ export async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintNam
 
             const taskDetail = taskDetailResponse.data; // Detalhes da tarefa, incluindo a descrição
             const fullDescription = taskDetail.description; // Obtém a descrição completa da tarefa
+
 
             // Extrair a parte relevante da descrição
             const descriptionMatch = fullDescription.match(regexDescriptionModel);
