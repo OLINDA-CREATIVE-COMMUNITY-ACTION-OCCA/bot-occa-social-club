@@ -1,5 +1,7 @@
 import {Sequelize} from "sequelize";
 import consoleOccinho  from "./ConsoleOccinho.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const sequelize = new Sequelize(
     process.env.DB_NAME,
@@ -15,8 +17,8 @@ export const sequelize = new Sequelize(
  */
 export async function startDatabase() {
     try {
-        await sequelize.authenticate();
         await sequelize.sync();
+        await sequelize.authenticate();
         console.log("A conexão com o banco de dados foi estabelecida com sucesso!")
     } catch (error) {
         console.error('Não foi possível se conectar com o banco de dados', error)
