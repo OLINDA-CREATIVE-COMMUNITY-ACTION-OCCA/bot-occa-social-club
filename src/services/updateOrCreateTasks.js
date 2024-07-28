@@ -1,7 +1,7 @@
-const { Task } = require('../models/Task')
-const { axios } = require('axios');
+import Task from '../models/Task.js';
+import axios  from 'axios';
 
-async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintName, storedUsers) {
+export async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintName, storedUsers) {
     const tasksBatch = [];
     /**
     * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
@@ -116,4 +116,3 @@ async function updateOrCreateTasks(tasksInEva, tasksInDatabase, sprintName, stor
         console.error("Ocorreu um erro na atualização das tarefas", error)
     }
 }
-module.exports = { updateOrCreateTasks };

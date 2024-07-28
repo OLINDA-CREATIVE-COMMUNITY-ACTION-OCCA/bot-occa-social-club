@@ -5,7 +5,7 @@
  * @param {string} text - O texto a ser processado.
  * @returns {string} - O texto sem URLs.
  */
-function removeUrls(text) {
+export function removeUrls(text) {
     return text.replace(/https?:\/\/[^\s]+/g, '');
 }
 
@@ -15,7 +15,7 @@ function removeUrls(text) {
  * @param {boolean} hasNegotiationModel - Se a descrição contém o modelo de negociação.
  * @returns {string} - A descrição formatada.
  */
-function formatDescription(description, hasNegotiationModel) {
+export function formatDescription(description, hasNegotiationModel) {
     const descriptionWithoutUrls = removeUrls(description);
     const modelMessage = hasNegotiationModel ? 'Modelo de negociação presente.' : 'Modelo de negociação não presente.';
     return `${descriptionWithoutUrls}\n${modelMessage}`;
@@ -28,10 +28,8 @@ function formatDescription(description, hasNegotiationModel) {
  * @param {RegExp} regex - A expressão regular para encontrar o modelo de negociação.
  * @returns {string} - A parte da descrição que corresponde ao modelo de negociação.
  */
-function extractNegotiationModel(description) {
+export function extractNegotiationModel(description) {
     const negotiationRegex = /\[N\s*=\s*\d+\s*:\s*[^,\]]+(?:,\s*N\s*=\s*\d+\s*:\s*[^,\]]+)*\]/;
     const match = description.match(negotiationRegex);
     return match ? match[0] : '';
 }
-
-module.exports = { removeUrls, formatDescription,  extractNegotiationModel };

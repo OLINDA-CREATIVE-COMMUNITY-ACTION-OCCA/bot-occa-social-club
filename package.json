@@ -1,10 +1,12 @@
 {
+  "type": "module",
   "dependencies": {
     "axios": "^1.7.2",
+    "cjstoesm": "^2.1.2",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "mysql2": "^3.10.3",
     "parse": "^5.3.0",
-    "sequelize": "^6.37.3",
-    "mysql2": "^3.10.3"
+    "sequelize": "^6.37.3"
   }
 }

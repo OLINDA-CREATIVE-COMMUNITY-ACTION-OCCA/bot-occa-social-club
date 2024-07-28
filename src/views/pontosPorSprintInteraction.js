@@ -1,11 +1,13 @@
 // Importa a função getRankingWithSprints do controlador e sendLongMessage do serviço de mensagens
-const { getRankingWithSprints } = require('../controllers/ControllerRanking');
-const { sendLongMessage } = require('../services/ServiceMensagens');
-const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const {addUsersToBack4App} = require('../services/ServiceUsuario')
+import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
+import { sendLongMessage } from '../services/ServiceMensagens.js';
+import { addOrUpdateTasks } from '../services/ServiceTaskByProject.js';
+import { addUsersToBack4App } from '../services/ServiceUsuario.js';
+import { updateData } from './ranking.js';
+
 
 // Função assíncrona para lidar com a interação de pontos por sprint
-async function handlePointsBySprintInteraction(interaction, authTokenEva) {
+export async function handlePointsBySprintInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
@@ -56,6 +58,3 @@ async function handlePointsBySprintInteraction(interaction, authTokenEva) {
         await interaction.followUp('Ocorreu um erro ao tentar exibir os pontos por sprint.');
     }
 }
-
-
-module.exports = { handlePointsBySprintInteraction };

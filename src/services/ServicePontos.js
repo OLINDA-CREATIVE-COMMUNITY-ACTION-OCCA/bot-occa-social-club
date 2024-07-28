@@ -1,6 +1,6 @@
-const {  User } = require("../models/User");
-const { consoleOccinho } = require("../util/ConsoleOccinho");
-const { extractNegotiationModel } = require("./ServiceDescription");
+import User  from "../models/User.js";
+import consoleOccinho  from "../util/ConsoleOccinho.js";
+import { extractNegotiationModel } from "./ServiceDescription.js";
 
 /**
  *  Função para calcular pontos EVA com base no título do projeto
@@ -9,7 +9,7 @@ const { extractNegotiationModel } = require("./ServiceDescription");
  * @param user
  * @param interaction
  */
-async function calcularPontosEVA(task, user, interaction) {
+export async function calcularPontosEVA(task, user, interaction) {
     await interaction.deferReply();
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = task.titulo.match(negotiateTitleRegex);
@@ -52,7 +52,7 @@ async function calcularPontosEVA(task, user, interaction) {
  * @param {*} evaUserName nome do usuário em eva
  * @returns quantos pontos o usuário recebeu em certa negociação
  */
-function getNegotiationsPointsForUser(model, evaUserName) {
+export function getNegotiationsPointsForUser(model, evaUserName) {
     consoleOccinho?.log("model =", model);
     const usersAndPoints = model.split(",");
     const regexFullNameEva = /[a-zA-Z\u00C0-\u017F]+( [a-zA-Z\u00C0-\u017F]+)+/;
@@ -70,7 +70,7 @@ function getNegotiationsPointsForUser(model, evaUserName) {
     throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
 }
 
-function getTaskTotalPoints(taskTitle) {
+export function getTaskTotalPoints(taskTitle) {
     const titleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = taskTitle.match(titleRegex);
     try {
@@ -84,7 +84,7 @@ function getTaskTotalPoints(taskTitle) {
     }
 }
 
-async function validateNegotiation(task) {
+export async function validateNegotiation(task) {
     const taskTotalpoints = getTaskTotalPoints(task.titulo);
     const users = await User.findAll();
     const usersAssigners = [];
@@ -114,7 +114,7 @@ async function validateNegotiation(task) {
  * @param {*} numeroSprintsParticipadas
  * @returns
  */
-function calcularPontosXP(
+export function calcularPontosXP(
     pontosEVA,
     mediaPontosEVA,
     numeroSprintsParticipadas
@@ -130,8 +130,3 @@ function calcularPontosXP(
         return pontosEVA * 30;
     }
 }
-
-module.exports = {
-    calcularPontosEVA,
-    calcularPontosXP,
-};

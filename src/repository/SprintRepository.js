@@ -1,4 +1,4 @@
-const kanbanStatusMap = {
+export const kanbanStatusMap = {
     1386: "Pronto para revisar",
     1385: "Em andamento",
     1387: "Concluído",
@@ -7,10 +7,9 @@ const kanbanStatusMap = {
     1383: "Backlog"
 };
 
-const sprintNameMap = {
+export const sprintNameMap = {
     "sprint-05-a-1903": "sprint 05",
     "haccaton": "sprint-06",
     "sprint-3-0304": "sprint-07",
     "sprint-04": "sprint-08"
 };
-module.exports={ sprintNameMap, kanbanStatusMap };

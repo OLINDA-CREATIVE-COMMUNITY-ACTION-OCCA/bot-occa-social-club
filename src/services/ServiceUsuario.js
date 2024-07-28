@@ -1,10 +1,10 @@
 // Importações de módulos
-const { getUsersFromAPI } = require('../util/apiUtil'); // Função para obter usuários da API externa
-const { userExistsAndUpdate } = require('../repository/UsuarioRepository');
-const { consoleOccinho } = require("../util/ConsoleOccinho"); // Função para verificar e atualizar usuários no repositório
+import { getUsersFromAPI } from '../util/apiUtil.js'; // Função para obter usuários da API externa
+import { userExistsAndUpdate } from '../repository/UsuarioRepository.js';
+import consoleOccinho  from "../util/ConsoleOccinho.js"; // Função para verificar e atualizar usuários no repositório
 
 // Função assíncrona para adicionar usuários ao Back4App
-async function addUsersToBack4App(authTokenEva) {
+export async function addUsersToBack4App(authTokenEva) {
     try {
         consoleOccinho?.time("getUsersFromAPI");
         const users = await getUsersFromAPI(authTokenEva); // Obtém usuários da API externa
@@ -24,4 +24,3 @@ async function addUsersToBack4App(authTokenEva) {
     }
 }
 
-module.exports = { addUsersToBack4App }; // Exporta a função para utilização externa

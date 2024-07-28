@@ -1,5 +1,5 @@
-const { sequelize } = require('../util/Database');
-const {DataTypes} = require('sequelize');
+import {sequelize} from '../util/Database.js';
+import { DataTypes } from 'sequelize';
 
 /**
  * Model para sprint o slug é um identificador único para a sprint, como um id
@@ -31,4 +31,4 @@ const Sprint = sequelize.define(
     }
 );
 
-module.exports = { Sprint }
+export default Sprint

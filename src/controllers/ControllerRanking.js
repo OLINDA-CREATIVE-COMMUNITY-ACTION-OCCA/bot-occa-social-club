@@ -1,9 +1,9 @@
-const { calcularPontosEVA, calcularPontosXP } = require('../services/ServicePontos'); // Importa funções para calcular pontos EVA e XP
-const { consoleOccinho } = require('../util/ConsoleOccinho');
-const { User } = require('../models/User')
-const { Task } = require('../models/Task');
+import { calcularPontosEVA, calcularPontosXP } from '../services/ServicePontos.js'; // Importa funções para calcular pontos EVA e XP
+import  User  from '../models/User.js';
+import  Task  from '../models/Task.js';
 
-async function getRankingWithSprints() {
+
+export async function getRankingWithSprints() {
     try {
         const storedTasks = await Task.findAll(); // Obtém projetos armazenados
         const storedUsers = await User.findAll(); // Obtém usuários armazenados
@@ -97,5 +97,3 @@ async function getRankingWithSprints() {
         throw error; // Lança o erro
     }
 }
-
-module.exports = { getRankingWithSprints }; // Exporta a função para ser utilizada em outros módulos

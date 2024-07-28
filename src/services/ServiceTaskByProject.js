@@ -1,20 +1,21 @@
 // Importações de módulos e configuração inicial
-const axios = require('axios'); // Para requisições HTTP
-const Parse = require('parse/node'); // Para interação com o Parse Server
-const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require('../repository/projetotRepository'); // Funções de acesso aos dados armazenados
-const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
-const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
-const { consoleOccinho } = require('../util/ConsoleOccinho');
-const {updateOrCreateTasks} = require("./updateOrCreateTasks");
-require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
+import axios from 'axios'; // Para requisições HTTP
+import User from '../models/User.js';
+import Task from '../models/Task.js';
+import Sprint from '../models/Sprint.js';
+import { sprintNameMap, kanbanStatusMap } from '../repository/SprintRepository.js'; // Mapeamentos de nomes de sprint e status
+import consoleOccinho  from '../util/ConsoleOccinho.js';
+import { updateOrCreateTasks } from './updateOrCreateTasks.js';
+import dotenv from 'dotenv'; // Carrega as variáveis de ambiente do arquivo .env
 
+dotenv.config()
 const logPath = "ServiceTaskByProject";
 
 /**
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
  */
-async function addOrUpdateTasks(authTokenEva) {
+export async function addOrUpdateTasks(authTokenEva) {
     /**
      * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
      * @type {*[string]}
@@ -24,8 +25,8 @@ async function addOrUpdateTasks(authTokenEva) {
     try {
         // Obtenção de sprints e projetos armazenados e usuários do Parse
         const [storedSprints, tasksFromDatabase, storedUsers] = await Promise.all([
-            getStoredSprints(),
-            getStoredTasksByProjects(),
+            Sprint.findAll(),
+            Task.findAll(),
             fetchStoredUsers()
         ]);
 
@@ -72,5 +73,3 @@ async function addOrUpdateTasks(authTokenEva) {
 
     return changesLog; // Retorna o log de mudanças
 }
-
-module.exports = { addOrUpdateTaskByProjectsToBack4App: addOrUpdateTasks }; // Exporta a função para uso externo

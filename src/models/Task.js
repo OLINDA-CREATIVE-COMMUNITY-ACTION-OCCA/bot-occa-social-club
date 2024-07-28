@@ -1,5 +1,5 @@
-const { sequelize } = require('../util/Database');
-const { DataTypes } = require('sequelize')
+import {sequelize} from '../util/Database.js';
+import {DataTypes} from "sequelize";
 
 const Task = sequelize.define(
     'Task',
@@ -47,5 +47,4 @@ const Task = sequelize.define(
         }
     }
 );
-// precisa fazer a relação entre User e assigners_eva_id algum tipo de verificação
-module.exports = { Task }
+export default Task

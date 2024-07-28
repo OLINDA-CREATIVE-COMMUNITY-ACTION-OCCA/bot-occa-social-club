@@ -1,15 +1,16 @@
 // Importa a função getRankingWithSprints do controlador e sendLongMessage do serviço de mensagens
-const { getRankingWithSprints } = require('../controllers/ControllerRanking');
-const { sendLongMessage } = require('../services/ServiceMensagens');
-const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const {addUsersToBack4App} =require('../services/ServiceUsuario')
+import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
+import { sendLongMessage } from '../services/ServiceMensagens.js';
+import { addOrUpdateTasks} from '../services/ServiceTaskByProject.js';
+import { addUsersToBack4App } from '../services/ServiceUsuario.js';
 
-async function updateData(authTokenEva) {
+
+export async function updateData(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
         const [newUsers, changes] = await Promise.all([
             addUsersToBack4App(authTokenEva),
-            addOrUpdateTaskByProjectsToBack4App(authTokenEva)
+            addOrUpdateTasks(authTokenEva)
         ]);
         let responseMessage = '';
 
@@ -31,7 +32,7 @@ async function updateData(authTokenEva) {
 }
 
 // Função assíncrona para lidar com a interação de ranking
-async function handleRankingInteraction(interaction, authTokenEva) {
+export async function handleRankingInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
@@ -56,6 +57,3 @@ async function handleRankingInteraction(interaction, authTokenEva) {
         await interaction.followUp('Ocorreu um erro ao tentar obter o ranking.');
     }
 }
-
-// Exporta a função handleRankingInteraction para uso em outros módulos
-module.exports = { handleRankingInteraction };

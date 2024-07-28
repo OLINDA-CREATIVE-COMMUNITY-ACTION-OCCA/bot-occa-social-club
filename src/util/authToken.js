@@ -1,23 +1,20 @@
-const axios = require('axios'); // Importa o módulo axios para fazer requisições HTTP
+import axios from 'axios'
 
 /**
  * Essa função pega o token de autoriazação do eva e precisa ser chamada logo no inicio do index.js
  * @param {string} user nome de usuário do EVA
  * @param {string} password senha do EVA
  */
-async function getAuthToken(user, password) {
+export async function getAuthToken(user, password) {
     try {
-        const response = await axios.post('https://apiproduction.evastrategy.com/api/v1/auth', {
+        const response = await axios.post(process.env.URL_EVA + 'auth', {
             "password": `${password}`,
             "type": "normal",
             "username": `${user}`
         });
-        const authTokenEva = response.data.auth_token
-        return authTokenEva
+        return response.data.auth_token
     } catch (error) {
         console.error('Erro ao tentar pegar o Token:', error)
         throw error;
     }
 }
-
-module.exports = { getAuthToken };

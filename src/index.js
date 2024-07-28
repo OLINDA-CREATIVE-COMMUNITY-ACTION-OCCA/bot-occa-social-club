@@ -1,19 +1,16 @@
-require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
-const Parse = require('parse/node'); // Importa o módulo Parse para manipulação de dados
-Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY); // Inicializa o Parse com as chaves da aplicação
-Parse.serverURL = process.env.PARSE_SERVER_URL; // Define a URL do servidor Parse
-
-const { getAuthToken } = require('./util/authToken');
-const {Client, GatewayIntentBits, REST, Routes} = require('discord.js'); // Importa as classes e funções necessárias do discord.js
-const {handleRankingInteraction} = require('./views/ranking'); // Importa a função de manipulação da interação de ranking
-const {handlePointsBySprintInteraction} = require('./views/pontosPorSprintInteraction'); // Importa a função de manipulação da interação de pontos por sprint
-const {sendLongMessage} = require('./services/ServiceMensagens'); // Importa a função para enviar mensagens longas
-const {consoleOccinho} = require('./util/ConsoleOccinho');
-const { startDatabase, sequelize } = require('./util/Database')
+import dotenv from 'dotenv';
+import { getAuthToken } from './util/authToken.js';
+import { Client, GatewayIntentBits, REST, Routes } from 'discord.js'; // Importa as classes e funções necessárias do discord.js
+import { handleRankingInteraction } from './views/ranking.js'; // Importa a função de manipulação da interação de ranking
+import { handlePointsBySprintInteraction } from './views/pontosPorSprintInteraction.js'; // Importa a função de manipulação da interação de pontos por sprint
+import { sendLongMessage } from './services/ServiceMensagens.js'; // Importa a função para enviar mensagens longas
+import  consoleOccinho from './util/ConsoleOccinho.js';
+import { sequelize, startDatabase } from './util/Database.js';
 // Import the built-in data types
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize';
 
 
+dotenv.config()
 let authTokenEva = ''
 // Configuração do bot do Discord
 const client = new Client({

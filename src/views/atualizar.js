@@ -1,8 +1,8 @@
 // Importa as funções necessárias dos serviços
-const { addOrUpdateTaskByProjectsToBack4App } = require('../services/ServiceTaskByProject');
-const { addUsersToBack4App } = require('../services/ServiceUsuario');
-const { sendLongMessage } = require('../services/ServiceMensagens');
-const {consoleOccinho} = require("../util/ConsoleOccinho");
+import { addOrUpdateTasks } from '../services/ServiceTaskByProject.js';
+import { addUsersToBack4App } from '../services/ServiceUsuario.js';
+import { sendLongMessage } from '../services/ServiceMensagens.js';
+import consoleOccinho  from "../util/ConsoleOccinho.js";
 
 const logPath = "autalizar.js"
 
@@ -10,7 +10,7 @@ const logPath = "autalizar.js"
  * Função assíncrona para lidar com a interação de atualizar
  * @param {*} interaction 
  */
-async function handleAtualizarInteraction(interaction, authTokenEva) {
+export async function handleAtualizarInteraction(interaction, authTokenEva) {
     // Responde ao usuário que o processamento está em andamento
     await interaction.deferReply();
     try {
@@ -48,4 +48,3 @@ async function handleAtualizarInteraction(interaction, authTokenEva) {
 }
 
 // Exporta a função handleAtualizarInteraction para uso em outros módulos
-module.exports = { handleAtualizarInteraction };

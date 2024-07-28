@@ -1,4 +1,4 @@
-async function sendLongMessage(interaction, message) {
+export async function sendLongMessage(interaction, message) {
     const maxLength = 1900; // Comprimento máximo de caracteres por mensagem no Discord
 
     if (message.length <= maxLength) {
@@ -17,5 +17,3 @@ async function sendLongMessage(interaction, message) {
         }
     }
 }
-
-module.exports = { sendLongMessage }; // Exporta a função sendLongMessage para ser utilizada em outros módulos

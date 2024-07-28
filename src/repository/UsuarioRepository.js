@@ -1,10 +1,11 @@
-const { User } = require('../models/User');
+import User  from '../models/User.js'
+
 /**
  * Atualiza no banco de dados do bot as informações dos novos usuários de eva
  * @param user
  * @returns {Promise<null|string>}
  */
-async function userExistsAndUpdate(user) {
+export async function userExistsAndUpdate(user) {
     const existingUser = await User.findOne({ where: { eva_id: user.id } })
 
     if (existingUser) { // Se o usuário já existir
@@ -27,6 +28,3 @@ async function userExistsAndUpdate(user) {
         return `Usuário ${user.full_name} adicionado com sucesso.`; // Retorna mensagem de sucesso
     }
 }
-
-// Exporta a função userExistsAndUpdate para ser utilizada em outros módulos
-module.exports = { userExistsAndUpdate };
