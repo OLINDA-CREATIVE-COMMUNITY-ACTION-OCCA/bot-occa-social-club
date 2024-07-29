@@ -33,12 +33,16 @@ const Task = sequelize.define(
         },
         eva_assigners_id: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             get() {
-                this.getDataValue('eva_assigners_id').split(';');
+                this.getDataValue('eva_assigners_id') ? this.getDataValue('eva_assigners_id').split(';') : null
             },
             set(val) {
-                this.setDataValue('eva_assigners_id', val.join(';'))
+                if(val === []) {
+                    this.setDataValue('eva_assigners_id', null);
+                } else {
+                    this.setDataValue('eva_assigners_id', val.join(';'));
+                }
             }
         },
         eva_description: {

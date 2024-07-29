@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14592643-cdfe-4dcd-a058-a2d4c9000c91" name="Changes" comment="fix: Database importing the environment variables">
+    <list default="true" id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: bugs related to sequelize">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ServiceNameID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceNameID.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,31 +23,30 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "victorYghor"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;victorYghor&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/OLINDA-CREATIVE-COMMUNITY-ACTION-OCCA/bot-occa-social-club.git&quot;,
     &quot;accountId&quot;: &quot;117f70dd-26ac-484b-87e4-bc5511ad4f18&quot;
   }
 }</component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
-  <component name="ProjectId" id="2jtVgk3GHBGzh9QKapFuap9dMbZ" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2jtY4c7iGjuW4M8aB4gs85BbRfv" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Docker.src.db: Compose Deployment.executor": "Run",
-    "Node.js.Database.js.executor": "Run",
     "Node.js.index.js.executor": "Run",
+    "Node.js.updateOrCreateTasks.js.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feature/use-mysql",
     "node.js.detected.package.eslint": "true",
@@ -57,50 +57,24 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
-      <deployment type="docker-compose.yml">
-        <settings />
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="src.db: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="envFilePath" value="" />
-          <option name="services">
-            <list>
-              <option value="db" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="src/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Docker.src.db: Compose Deployment" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="fix: Database importing the environment variables">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: Solve problems of not define variables" />
+      <created>1722207650008</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1722207650008</updated>
+      <workItem from="1722207651128" duration="2448000" />
+      <workItem from="1722210228192" duration="3335000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix: bugs related to sequelize">
       <option name="closed" value="true" />
-      <created>1722206424435</created>
+      <created>1722212182621</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1722206424435</updated>
-    </task>
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="14592643-cdfe-4dcd-a058-a2d4c9000c91" name="Changes" comment="fix: Database importing the environment variables" />
-      <created>1722206475960</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1722206475960</updated>
-      <workItem from="1722206478851" duration="365000" />
+      <updated>1722212182621</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -108,19 +82,52 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix: Database importing the environment variables" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Database importing the environment variables" />
+    <MESSAGE value="fix: Solve problems of not define variables" />
+    <MESSAGE value="fix: bugs related to sequelize" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: bugs related to sequelize" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/ServiceNameID.js</url>
+          <line>11</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/ServiceNameID.js</url>
+          <line>29</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/updateOrCreateTasks.js</url>
+          <line>76</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/updateOrCreateTasks.js</url>
+          <line>77</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/updateOrCreateTasks.js</url>
+          <line>127</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
+          <line>22</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="javascript-exception" />
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

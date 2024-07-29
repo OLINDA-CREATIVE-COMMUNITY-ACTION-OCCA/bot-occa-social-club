@@ -11,9 +11,11 @@ import {where} from "sequelize";
 export async function convertAssignerIdsToNames(assigners) {
     const assignerIds = typeof assigners === 'string' ? assigners.split(', ') : assigners;
     const assignersNames = []
-    for (const assignerId of assigners) {
-        const user = await User.findOne({ where: { eva_id: assignerId } });
-        assignersNames.push(user ? user.eva_name : `ID: ${assignerId}`);
+    if(assigners) {
+        for (const assignerId of assigners) {
+            const user = await User.findOne({ where: { eva_id: assignerId } });
+            assignersNames.push(user ? user.eva_name : `ID: ${assignerId}`);
+        }
     }
     return assignersNames.join(', ');
 }
