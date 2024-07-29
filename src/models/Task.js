@@ -35,7 +35,8 @@ const Task = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true,
             get() {
-                this.getDataValue('eva_assigners_id') ? this.getDataValue('eva_assigners_id').split(';') : null
+                const rawValue = this.getDataValue('eva_assigners_id')
+                return rawValue ? rawValue.split(';') : null
             },
             set(val) {
                 if(val === []) {

@@ -7,7 +7,7 @@ import axios from 'axios'
  */
 export async function getAuthToken(user, password) {
     try {
-        const response = await axios.post(process.env.URL_EVA + 'auth', {
+        const response = await axios.post('https://apiproduction.evastrategy.com/api/v1/auth', {
             "password": `${password}`,
             "type": "normal",
             "username": `${user}`

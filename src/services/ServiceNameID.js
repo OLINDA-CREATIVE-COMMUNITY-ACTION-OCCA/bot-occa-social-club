@@ -13,6 +13,7 @@ export async function convertAssignerIdsToNames(assigners) {
     const assignersNames = []
     if(assigners) {
         for (const assignerId of assigners) {
+            // isso é muito custoso em questão de tempo e precisa ser removido
             const user = await User.findOne({ where: { eva_id: assignerId } });
             assignersNames.push(user ? user.eva_name : `ID: ${assignerId}`);
         }

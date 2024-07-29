@@ -1,6 +1,7 @@
 import { calcularPontosEVA, calcularPontosXP } from '../services/ServicePontos.js'; // Importa funções para calcular pontos EVA e XP
 import  User  from '../models/User.js';
 import  Task  from '../models/Task.js';
+import consoleOccinho from "../util/ConsoleOccinho.js";
 
 
 export async function getRankingWithSprints() {
@@ -20,7 +21,9 @@ export async function getRankingWithSprints() {
             let totalPontosXP = 0; // Total de pontos XP
 
             for (const task of storedTasks) {
+                consoleOccinho?.log("assigners ids", task.eva_assigners_id)
                 if (task.eva_assigners_id?.includes(user.eva_id) && task.eva_status_name === 'Concluído') {
+                    consoleOccinho?.log("assigners ids", task.eva_assigners_id)
                     const pontosEVA = await calcularPontosEVA(task.eva_title);
 
                     if (!pontosPorSprint[task.eva_sprint_name]) {

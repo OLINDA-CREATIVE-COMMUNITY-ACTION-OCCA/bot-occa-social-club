@@ -1,8 +1,9 @@
 import Task from '../models/Task.js';
-import axios  from 'axios';
+import axios from 'axios';
 import {kanbanStatusMap} from "../repository/SprintRepository.js";
 import {convertAssignerIdsToNames, convertAssignerNameToId} from "./ServiceNameID.js";
 import consoleOccinho from "../util/ConsoleOccinho.js";
+import {removeUrls} from "./ServiceDescription.js";
 
 /**
  *
@@ -23,9 +24,9 @@ export async function updateOrCreateTasks(tasksFromEVA,
     const regexNPrefix = /^\[\s*N\s*:\s*\d+\s*[Xx]\s*\d+\s*]\s?.*$/;
 
     /**
-    * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
- * @type {*[string]}
- */
+     * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
+     * @type {*[string]}
+     */
     let changesLog = [];
     const logPath = "updateOrCreateTask ";
     try {
@@ -37,7 +38,7 @@ export async function updateOrCreateTasks(tasksFromEVA,
 
             // Requisição adicional para obter a descrição da tarefa
             const taskDetailResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks/${taskEva.id}`, {
-                headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
+                headers: {'Authorization': `Bearer ${authTokenEva}`} // Token de autorização da API
             });
 
             const taskDetail = taskDetailResponse.data; // Detalhes da tarefa, incluindo a descrição
@@ -52,7 +53,7 @@ export async function updateOrCreateTasks(tasksFromEVA,
             // Obtém nomes dos assinantes e IDs dos assinantes
             const assignersIds = taskEva.assigners
 
-            const existingTask = await Task.findOne({ where: { eva_title: taskEva.subject } });
+            const existingTask = await Task.findOne({where: {eva_title: taskEva.subject}});
 
             if (existingTask) {
                 let changed = false; // Flag para indicar se houve alterações
@@ -61,7 +62,8 @@ export async function updateOrCreateTasks(tasksFromEVA,
                 // Verifica e atualiza o status do projeto se necessário
                 if (existingTask.eva_status_number !== kanbanStatusMap[taskEva.status]) {
                     changeDetails += `\n  - Status: de "${existingTask.eva_status_number}" para "${kanbanStatusMap[taskEva.status]}"`;
-                    existingTask.eva_status_number = kanbanStatusMap[taskEva.status];
+                    existingTask.eva_status_number = taskEva.status;
+                    existingTask.eva_status_name = kanbanStatusMap[taskEva.status];
                     changed = true;
                 }
 
@@ -88,7 +90,7 @@ export async function updateOrCreateTasks(tasksFromEVA,
                     if (existingTask.eva_description !== fullDescription) {
                         // Atualiza a descrição completa e mostra apenas o modelo de negociação no log
                         changeDetails += `\n  - Descrição: de "${existingTask.eva_description}" para "${description}"`;
-                        existingTask.eva_description = fullDescription;
+                        existingTask.eva_description = removeUrls(fullDescription)
                         changed = true;
                     }
                 } else {
@@ -96,20 +98,13 @@ export async function updateOrCreateTasks(tasksFromEVA,
                     if (existingTask.eva_description !== fullDescription) {
                         // Atualiza a descrição completa e mostra a mensagem padrão no log
                         changeDetails += `\n  - Descrição: de "${existingTask.eva_description}" para "essa tarefa não tem modelo de negociação"`;
-                        existingTask.eva_description = fullDescription;
+                        existingTask.eva_description = removeUrls(fullDescription);
                         changed = true;
                     }
                 }
 
                 // Se houver alterações, atualiza as informações no banco de dados
                 if (changed) {
-                    existingTask.set({
-                        eva_status_number: taskEva.status,
-                        eva_status_name: kanbanStatusMap[taskEva.status],
-                        eva_sprint_name: sprintName,
-                        eva_assigners_id: taskEva.assigners,
-                        eva_description: taskEva.description
-                    })
                     tasksBatch.push(existingTask.save()); // Adiciona a promessa de salvamento ao array
                     changesLog.push(changeDetails); // Registra as alterações no log de mudanças
                 }
@@ -121,10 +116,9 @@ export async function updateOrCreateTasks(tasksFromEVA,
                     eva_status_number: taskEva.status,
                     eva_status_name: kanbanStatusMap[taskEva.status],
                     eva_sprint_name: sprintName,
-                    eva_description: taskEva.subject
+                    eva_description: removeUrls(taskEva.description)
                 })
                 tasksBatch.push(newTask); // Adiciona a promessa de salvamento ao array
-
                 const newAssignerNames = await convertAssignerIdsToNames(assignersIds);
                 changesLog.push(`Nova tarefa adicionada: ${taskEva.subject}\n  - Assinantes: ${newAssignerNames}\n  - Descrição: ${description}`); // Registra o novo projeto no log de mudanças
             }
