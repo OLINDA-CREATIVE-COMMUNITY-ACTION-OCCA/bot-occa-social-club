@@ -17,14 +17,15 @@ export async function userExistsAndUpdate(user) {
             })
             await existingUser.save();
         }
-        return null; // Retorna null se o nome já estiver correto
+        return `Nome do novo usuário ${existingUser.eva_name} atualizado`; // Retorna null se o nome já estiver correto
     } else { // Se o usuário não existir
 
         const newUser = await User.create({
             eva_name: user.full_name,
             eva_id: user.id
         })
+        await newUser.save()
 
-        return `Usuário ${user.full_name} adicionado com sucesso.`; // Retorna mensagem de sucesso
+        return `Usuário ${newUser.full_name} adicionado com sucesso.`; // Retorna mensagem de sucesso
     }
 }

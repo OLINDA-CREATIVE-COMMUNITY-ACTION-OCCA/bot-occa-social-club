@@ -1,27 +1,31 @@
+import User from "../models/User.js";
+import {Where} from "sequelize/lib/utils";
+import {where} from "sequelize";
 
 /**
  * Função para converter IDs de atribuidores em nomes de usuários
  * @param {*} assigners
- * @param {*} storedUsersMap
+ * @param {*} storedUsers
  * @returns o nome do usuário ou o ID se o nome não for encontrado
  */
-export function convertAssignerIdsToNames(assigners, storedUsersMap) {
+export async function convertAssignerIdsToNames(assigners) {
     const assignerIds = typeof assigners === 'string' ? assigners.split(', ') : assigners;
-
-    return assignerIds.map(id => {
-        const user = storedUsersMap.get(id.toString());
-        return user ? user.eva_name : `ID: ${id}`;
-    }).join(', ');
+    const assignersNames = []
+    for (const assignerId of assigners) {
+        const user = await User.findOne({ where: { eva_id: assignerId } });
+        assignersNames.push(user ? user.eva_name : `ID: ${assignerId}`);
+    }
+    return assignersNames.join(', ');
 }
 
 /**
  *  Função para obter os IDs dos atribuidores a partir dos nomes
- * @param {*} assignerNames 
+ * @param {*} assignerNames
  * @param {*} storedUsersMap
  * @returns null se o nome do usuário não for encontrado nos usuários armazenados
  */
 export function convertAssignerNameToId(assignerNames, storedUsersMap) {
-    const ids = assignerNames.map(name => {
+    return assignerNames.map(name => {
         for (let [id, user] of storedUsersMap.entries()) {
             if (user.eva_name === name.trim()) {
                 return id;
@@ -29,6 +33,4 @@ export function convertAssignerNameToId(assignerNames, storedUsersMap) {
         }
         return null;
     }).filter(id => id !== null).join(', ');
-
-    return ids;
 }

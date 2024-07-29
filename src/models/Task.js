@@ -22,7 +22,6 @@ const Task = sequelize.define(
         eva_status_number: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: true,
         },
         eva_status_name: {
             type: DataTypes.STRING,

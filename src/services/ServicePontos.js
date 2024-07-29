@@ -1,6 +1,6 @@
-import User  from "../models/User.js";
-import consoleOccinho  from "../util/ConsoleOccinho.js";
-import { extractNegotiationModel } from "./ServiceDescription.js";
+import User from "../models/User.js";
+import consoleOccinho from "../util/ConsoleOccinho.js";
+import {extractNegotiationModel} from "./ServiceDescription.js";
 
 /**
  *  Função para calcular pontos EVA com base no título do projeto
@@ -71,13 +71,12 @@ export function getNegotiationsPointsForUser(model, evaUserName) {
 }
 
 export function getTaskTotalPoints(taskTitle) {
-    const titleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
+    const titleRegex = /\[([GIN]):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = taskTitle.match(titleRegex);
     try {
         const pontos = parseInt(match[2], 10); // Extrai o número de pontos do título
         const multiplicador = parseFloat(match[3]); // Extrai o multiplicador do título
-        const taskTotalPoints = pontos * multiplicador;
-        return taskTotalPoints;
+        return pontos * multiplicador;
     } catch (err) {
         console.log(`Erro no tipo de tarefa no titulo: ${err}`);
         return 0;

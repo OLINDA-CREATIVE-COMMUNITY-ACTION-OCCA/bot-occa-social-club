@@ -1,4 +1,3 @@
-// ServiceDescription.js
 
 /**
  * Remove URLs de um texto.
@@ -25,7 +24,6 @@ export function formatDescription(description, hasNegotiationModel) {
 /**
  * Extrai a parte da descrição que corresponde ao modelo de negociação.
  * @param {string} description - A descrição da tarefa.
- * @param {RegExp} regex - A expressão regular para encontrar o modelo de negociação.
  * @returns {string} - A parte da descrição que corresponde ao modelo de negociação.
  */
 export function extractNegotiationModel(description) {

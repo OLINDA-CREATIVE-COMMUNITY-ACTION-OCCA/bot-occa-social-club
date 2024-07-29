@@ -1,18 +1,20 @@
 import Task from '../models/Task.js';
 import axios  from 'axios';
-import {convertAssignerNameToId} from "./ServiceNameID.js";
+import {kanbanStatusMap} from "../repository/SprintRepository.js";
+import {convertAssignerIdsToNames, convertAssignerNameToId} from "./ServiceNameID.js";
+import consoleOccinho from "../util/ConsoleOccinho.js";
 
 /**
  *
- * @param tasksInEva
- * @param tasksInDatabase
+ * @param tasksFromEVA
+ * @param tasksFromDatabase
  * @param sprintName
  * @param storedUsers
  * @param authTokenEva
  * @returns {Promise<void>}
  */
-export async function updateOrCreateTasks(tasksInEva,
-                                          tasksInDatabase,
+export async function updateOrCreateTasks(tasksFromEVA,
+                                          tasksFromDatabase,
                                           sprintName,
                                           storedUsers,
                                           authTokenEva) {
@@ -27,7 +29,7 @@ export async function updateOrCreateTasks(tasksInEva,
     let changesLog = [];
     const logPath = "updateOrCreateTask ";
     try {
-        for (const taskEva of tasksInEva) {
+        for (const taskEva of tasksFromEVA) {
             if (taskEva.subject === 'teste' || taskEva.subject === 'Estudar o codigo (front end) - NOME MEMBRO [8x1][Individual]') {
                 console.log(`Projeto ${taskEva.subject} ignorado.`); // Ignora projetos de teste com o assunto 'teste'
                 continue;
@@ -45,21 +47,21 @@ export async function updateOrCreateTasks(tasksInEva,
             // Extrair a parte relevante da descrição
             const descriptionMatch = fullDescription.match(regexDescriptionModel);
             const description = descriptionMatch ? descriptionMatch[0] : 'essa tarefa não tem modelo de negociação'; // Se não houver correspondência, define mensagem padrão
+            const storedUsersMap = new Map(storedUsers.map(user => [user.id.toString(), user]));
 
             // Obtém nomes dos assinantes e IDs dos assinantes
-            const assignersNames = getAssignerNames(taskEva.assigners, storedUsers);
-            const assignersIds = convertAssignerNameToId(assignersNames.split(', '), storedUsers);
+            const assignersIds = taskEva.assigners
 
-            const existingTask = await tasksInDatabase.findOne({ where: { eva_title: taskEva.subject } });
+            const existingTask = await Task.findOne({ where: { eva_title: taskEva.subject } });
 
             if (existingTask) {
                 let changed = false; // Flag para indicar se houve alterações
                 let changeDetails = `Projeto ${taskEva.subject} atualizado:`; // Detalhes das alterações realizadas
 
                 // Verifica e atualiza o status do projeto se necessário
-                if (existingTask.eva_status_number !== statusMap[taskEva.status]) {
-                    changeDetails += `\n  - Status: de "${existingTask.eva_status_number}" para "${statusMap[taskEva.status]}"`;
-                    existingTask.eva_status_number = statusMap[taskEva.status];
+                if (existingTask.eva_status_number !== kanbanStatusMap[taskEva.status]) {
+                    changeDetails += `\n  - Status: de "${existingTask.eva_status_number}" para "${kanbanStatusMap[taskEva.status]}"`;
+                    existingTask.eva_status_number = kanbanStatusMap[taskEva.status];
                     changed = true;
                 }
 
@@ -72,8 +74,8 @@ export async function updateOrCreateTasks(tasksInEva,
 
                 // Verifica e atualiza os assinantes do projeto se necessário
                 if (existingTask.eva_assigners_id !== assignersIds) {
-                    const oldAssignerNames = convertAssignerIdsToNames(existingTask.eva_assigners_id, storedUsers);
-                    const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
+                    const oldAssignerNames = await convertAssignerIdsToNames(existingTask.eva_assigners_id);
+                    const newAssignerNames = await convertAssignerIdsToNames(assignersIds);
 
                     changeDetails += `\n  - Assinantes: de "${oldAssignerNames}" para "${newAssignerNames}"`;
                     existingTask.eva_assigners_id = assignersIds;
@@ -103,7 +105,7 @@ export async function updateOrCreateTasks(tasksInEva,
                 if (changed) {
                     existingTask.set({
                         eva_status_number: taskEva.status,
-                        eva_status_name: statusMap[taskEva.status],
+                        eva_status_name: kanbanStatusMap[taskEva.status],
                         eva_sprint_name: sprintName,
                         eva_assigners_id: taskEva.assigners,
                         eva_description: taskEva.description
@@ -117,13 +119,13 @@ export async function updateOrCreateTasks(tasksInEva,
                     eva_title: taskEva.subject,
                     eva_assigners_id: assignersIds,
                     eva_status_number: taskEva.status,
-                    eva_status_name: statusMap[taskEva.status],
+                    eva_status_name: kanbanStatusMap[taskEva.status],
                     eva_sprint_name: sprintName,
                     eva_description: taskEva.subject
                 })
-                tasksBatch.push(newTask.save()); // Adiciona a promessa de salvamento ao array
+                tasksBatch.push(newTask); // Adiciona a promessa de salvamento ao array
 
-                const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
+                const newAssignerNames = await convertAssignerIdsToNames(assignersIds);
                 changesLog.push(`Nova tarefa adicionada: ${taskEva.subject}\n  - Assinantes: ${newAssignerNames}\n  - Descrição: ${description}`); // Registra o novo projeto no log de mudanças
             }
         }

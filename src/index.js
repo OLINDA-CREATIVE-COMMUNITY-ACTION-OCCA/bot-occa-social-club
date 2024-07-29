@@ -3,11 +3,8 @@ import { getAuthToken } from './util/authToken.js';
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js'; // Importa as classes e funções necessárias do discord.js
 import { handleRankingInteraction } from './views/ranking.js'; // Importa a função de manipulação da interação de ranking
 import { handlePointsBySprintInteraction } from './views/pontosPorSprintInteraction.js'; // Importa a função de manipulação da interação de pontos por sprint
-import { sendLongMessage } from './services/ServiceMensagens.js'; // Importa a função para enviar mensagens longas
-import  consoleOccinho from './util/ConsoleOccinho.js';
 import { sequelize, startDatabase } from './util/Database.js';
-// Import the built-in data types
-import { DataTypes } from 'sequelize';
+
 
 
 dotenv.config()
