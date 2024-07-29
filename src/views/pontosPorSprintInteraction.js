@@ -14,7 +14,7 @@ export async function handlePointsBySprintInteraction(interaction, authTokenEva)
         // Atualiza os dados antes de obter os pontos por sprint
         const updateMessage = await updateData(authTokenEva);
         // Obtém o ranking com sprints
-        const rankingComSprints = await getRankingWithSprints();
+        const rankingComSprints = await getRankingWithSprints(interaction);
 
         // Verifica se o ranking tem dados
         if (rankingComSprints.length > 0) {

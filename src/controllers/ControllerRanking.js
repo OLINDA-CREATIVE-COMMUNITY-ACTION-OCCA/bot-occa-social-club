@@ -4,7 +4,7 @@ import  Task  from '../models/Task.js';
 import consoleOccinho from "../util/ConsoleOccinho.js";
 
 
-export async function getRankingWithSprints() {
+export async function getRankingWithSprints(interaction) {
     try {
         const storedTasks = await Task.findAll(); // Obtém projetos armazenados
         const storedUsers = await User.findAll(); // Obtém usuários armazenados
@@ -22,9 +22,9 @@ export async function getRankingWithSprints() {
 
             for (const task of storedTasks) {
                 consoleOccinho?.log("assigners ids", task.eva_assigners_id)
-                if (task.eva_assigners_id?.includes(user.eva_id) && task.eva_status_name === 'Concluído') {
+                if (task.eva_assigners_id?.includes(user.eva_id.toString()) && task.eva_status_name === 'Concluído') {
                     consoleOccinho?.log("assigners ids", task.eva_assigners_id)
-                    const pontosEVA = await calcularPontosEVA(task.eva_title);
+                    const pontosEVA = await calcularPontosEVA(task.eva_title, task.eva_description, user.eva_name, interaction);
 
                     if (!pontosPorSprint[task.eva_sprint_name]) {
                         pontosPorSprint[task.eva_sprint_name] = {

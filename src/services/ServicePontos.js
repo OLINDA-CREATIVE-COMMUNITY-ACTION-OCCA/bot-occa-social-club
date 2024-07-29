@@ -5,17 +5,18 @@ import {extractNegotiationModel} from "./ServiceDescription.js";
 /**
  *  Função para calcular pontos EVA com base no título do projeto
  * @returns
- * @param task
- * @param user
+ * @param taskTitle
+ * @param taskDescription
+ * @param username
  * @param interaction
  */
-export async function calcularPontosEVA(task, user, interaction) {
-    await interaction.deferReply();
+export async function calcularPontosEVA(taskTitle, taskDescription, username, interaction) {
+    // await interaction.deferReply();
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
-    const match = task.titulo.match(negotiateTitleRegex);
+    const match = taskTitle.match(negotiateTitleRegex);
 
     if (match) {
-        const taskTotalPoints = getTaskTotalPoints(task.titulo);
+        const taskTotalPoints = getTaskTotalPoints(taskTitle);
         switch (match[1].toUpperCase()) {
             case "G":
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
@@ -23,17 +24,17 @@ export async function calcularPontosEVA(task, user, interaction) {
                 return taskTotalPoints; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
             case "N":
                 try {
-                    const negotiationModel = extractNegotiationModel(task.descricao);
+                    const negotiationModel = extractNegotiationModel(taskDescription);
                     if (negotiationModel !== '') {
-                        if (await validateNegotiation(task)) {
-                            const points = getNegotiationsPointsForUser(negotiationModel, user.nome);
+                        if (await validateNegotiation(taskTitle)) {
+                            const points = getNegotiationsPointsForUser(negotiationModel, username);
                             consoleOccinho?.log("points = ", points);
                             return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
                         } else {
                             await interaction.followUp("ERRO! A divisão de pontos está maior que a pontuação total da tarefa.")
                         }
                     } else {
-                        await interaction.followUp(`A Tarefa: ${task.titulo} ainda não foi negociada!!!`);
+                        await interaction.followUp(`A Tarefa: ${taskTitle} ainda não foi negociada!!!`);
                     }
                 } catch (error) {
                     console.error(error)
