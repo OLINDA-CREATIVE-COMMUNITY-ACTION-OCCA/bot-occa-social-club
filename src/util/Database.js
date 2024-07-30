@@ -1,5 +1,5 @@
-import {Sequelize} from "sequelize";
-import consoleOccinho  from "./ConsoleOccinho.js";
+import { Sequelize } from "sequelize";
+import consoleOccinho from "./ConsoleOccinho.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,7 +9,14 @@ export const sequelize = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: 'localhost',
-        dialect: 'mysql'
+        dialect: 'mysql',
+        dialectOptions: {
+            charset: 'utf8mb4'
+        },
+        define: {
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_unicode_ci'
+        }
     }
 );
 /**

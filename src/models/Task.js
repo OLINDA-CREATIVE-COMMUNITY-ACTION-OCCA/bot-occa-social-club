@@ -49,8 +49,6 @@ const Task = sequelize.define(
         eva_description: {
             type: DataTypes.TEXT
         }
-    }, {
-    charset: 'utf8'
-}
+    }
 );
 export default Task
