@@ -84,24 +84,27 @@ export function getTaskTotalPoints(taskTitle) {
     }
 }
 
-export async function validateNegotiation(task) {
-    const taskTotalpoints = getTaskTotalPoints(task.titulo);
+/**
+ * Válida o modelo de negociação da tarefa
+ * @param taskTitle
+ * @param taskDescription
+ * @param taskAssigners
+ * @returns {Promise<boolean>}
+ */
+export async function validateNegotiation(taskTitle, taskDescription, taskAssigners) {
+    const taskTotalpoints = getTaskTotalPoints(taskTitle);
     const users = await User.findAll();
     const usersAssigners = [];
     const usersTotalPoints = [];
-    const negotiationModel = extractNegotiationModel(task.descricao);
-    const assinantes = task.assinantes.split(", ");
-
-    for (let idUser of assinantes) {
+    const negotiationModel = extractNegotiationModel(taskTitle);
+    for (let idUser of taskAssigners) {
         const userName = users.find((user) => user.id === idUser);
         usersAssigners.push(userName.nome);
     }
-
     for (let user of usersAssigners) {
         const userNegotiatePoints = getNegotiationsPointsForUser(negotiationModel, user);
         usersTotalPoints.push(userNegotiatePoints);
     }
-
     const totalNegotiatePoints = usersTotalPoints.reduce((totalPoints, userPoint) => totalPoints + userPoint, 0);
 
     return totalNegotiatePoints <= taskTotalpoints;

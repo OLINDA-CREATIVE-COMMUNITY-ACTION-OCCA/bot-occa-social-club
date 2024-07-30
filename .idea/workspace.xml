@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: bugs related to database">
+    <list default="true" id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: bot show the correct points to the users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ControllerRanking.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Task.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceNameID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceNameID.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceTaskByProject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/authToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/authToken.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ServicePontos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServicePontos.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +44,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Node.js.Task.js.executor": "Run",
-    "Node.js.index.js.executor": "Debug",
+    "Node.js.index.js.executor": "Run",
     "Node.js.updateOrCreateTasks.js.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feature/use-mysql",
@@ -70,7 +65,9 @@
       <option name="presentableId" value="Default" />
       <updated>1722207650008</updated>
       <workItem from="1722207651128" duration="2448000" />
-      <workItem from="1722210228192" duration="14411000" />
+      <workItem from="1722210228192" duration="15195000" />
+      <workItem from="1722276760287" duration="202000" />
+      <workItem from="1722276992711" duration="4991000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bugs related to sequelize">
       <option name="closed" value="true" />
@@ -88,7 +85,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722213630687</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix: get the assigners ids of some task">
+      <option name="closed" value="true" />
+      <created>1722276178465</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1722276178465</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix: bot show the correct points to the users">
+      <option name="closed" value="true" />
+      <created>1722278193956</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1722278193956</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -98,7 +111,9 @@
     <MESSAGE value="fix: Solve problems of not define variables" />
     <MESSAGE value="fix: bugs related to sequelize" />
     <MESSAGE value="fix: bugs related to database" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: bugs related to database" />
+    <MESSAGE value="fix: get the assigners ids of some task" />
+    <MESSAGE value="fix: bot show the correct points to the users" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: bot show the correct points to the users" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -111,28 +126,28 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/updateOrCreateTasks.js</url>
           <line>121</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <condition expression="user.eva_name == 'Victor Yghor Simões Dos Santos'" language="JavaScript" />
-          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
-          <line>25</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <condition expression="user.eva_id = 106" language="JavaScript" />
           <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
           <line>17</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
-          <line>81</line>
-          <properties lambdaOrdinal="-1" />
+          <line>82</line>
           <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
+          <line>26</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
+          <line>24</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
