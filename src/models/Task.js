@@ -1,5 +1,5 @@
-import {sequelize} from '../util/Database.js';
-import {DataTypes} from "sequelize";
+import { sequelize } from '../util/Database.js';
+import { DataTypes } from "sequelize";
 
 const Task = sequelize.define(
     'Task',
@@ -39,7 +39,7 @@ const Task = sequelize.define(
                 return rawValue ? rawValue.split(';') : null
             },
             set(val) {
-                if(val === []) {
+                if (val == []) {
                     this.setDataValue('eva_assigners_id', null);
                 } else {
                     this.setDataValue('eva_assigners_id', val.join(';'));
@@ -49,6 +49,8 @@ const Task = sequelize.define(
         eva_description: {
             type: DataTypes.TEXT
         }
-    }
+    }, {
+    charset: 'utf8'
+}
 );
 export default Task

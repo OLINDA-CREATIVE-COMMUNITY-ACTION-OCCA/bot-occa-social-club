@@ -5,7 +5,7 @@
  * @returns {string} - O texto sem URLs.
  */
 export function removeUrls(text) {
-    return text.replace(/https?:\/\/[^\s]+/g, '');
+    return text ? text.replace(/https?:\/\/[^\s]+/g, '') : null;
 }
 
 /**
