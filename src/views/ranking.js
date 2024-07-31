@@ -2,14 +2,14 @@
 import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
 import { sendLongMessage } from '../services/ServiceMensagens.js';
 import { addOrUpdateTasks} from '../services/ServiceTaskByProject.js';
-import { addUsersToBack4App } from '../services/ServiceUsuario.js';
+import { addOrUpdateUsersToDatabase } from '../services/ServiceUsuario.js';
 
 
 export async function updateData(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
         const [newUsers, changes] = await Promise.all([
-            addUsersToBack4App(authTokenEva),
+            addOrUpdateUsersToDatabase(authTokenEva),
             addOrUpdateTasks(authTokenEva)
         ]);
         let responseMessage = '';

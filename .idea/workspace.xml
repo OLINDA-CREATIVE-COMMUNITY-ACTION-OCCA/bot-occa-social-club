@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: bot show the correct points to the users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/ServicePontos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServicePontos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UsuarioRepository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ServiceNameID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceNameID.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ServiceUsuario.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ServiceUsuario.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/updateOrCreateTasks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/atualizar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pontosPorSprintInteraction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pontosPorSprintInteraction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/ranking.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/ranking.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,21 +47,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.Task.js.executor": "Run",
-    "Node.js.index.js.executor": "Run",
-    "Node.js.updateOrCreateTasks.js.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/use-mysql",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/vitor-yghor/Downloads/WebStorm-2024.1.4/WebStorm-241.17890.13/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.Task.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.updateOrCreateTasks.js.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/use-mysql&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.12.1&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.12.14&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/vitor-yghor/.nvm/versions/node/v20.12.1/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/vitor-yghor/Downloads/WebStorm-2024.1.4/WebStorm-241.17890.13/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -68,6 +78,9 @@
       <workItem from="1722210228192" duration="15195000" />
       <workItem from="1722276760287" duration="202000" />
       <workItem from="1722276992711" duration="4991000" />
+      <workItem from="1722354547625" duration="1514000" />
+      <workItem from="1722357238235" duration="11505000" />
+      <workItem from="1722425774601" duration="9345000" />
     </task>
     <task id="LOCAL-00001" summary="fix: bugs related to sequelize">
       <option name="closed" value="true" />
@@ -107,6 +120,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: Solve problems of not define variables" />
     <MESSAGE value="fix: bugs related to sequelize" />
@@ -120,7 +144,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/ServiceNameID.js</url>
-          <line>30</line>
+          <line>29</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -129,25 +153,40 @@
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <condition expression="user.eva_id = 106" language="JavaScript" />
+          <condition expression="user.eva_name == &quot;Victor Yghor Simões Dos Santos&quot;" language="JavaScript" />
           <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
           <line>17</line>
-          <option name="timeStamp" value="18" />
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
-          <line>82</line>
-          <option name="timeStamp" value="20" />
+          <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
+          <line>64</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
-          <line>26</line>
-          <option name="timeStamp" value="24" />
+          <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
+          <line>109</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/controllers/ControllerRanking.js</url>
+          <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
+          <line>99</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/ServiceUsuario.js</url>
           <line>24</line>
-          <option name="timeStamp" value="25" />
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/services/ServiceUsuario.js</url>
+          <line>22</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

@@ -8,7 +8,7 @@ import {where} from "sequelize";
  * @param {*} storedUsers
  * @returns o nome do usuário ou o ID se o nome não for encontrado
  */
-export async function convertAssignerIdsToNames(assigners, storedUsers) {
+export function convertAssignerIdsToNames(assigners, storedUsers) {
     const assignersNames = []
     if(assigners) {
         for (const assignerId of assigners) {

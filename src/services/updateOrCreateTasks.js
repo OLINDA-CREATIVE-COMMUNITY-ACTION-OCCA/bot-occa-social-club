@@ -76,8 +76,8 @@ export async function updateOrCreateTasks(tasksFromEVA,
 
                 // Verifica e atualiza os assinantes do projeto se necessário
                 if (existingTask.eva_assigners_id !== assignersIds) {
-                    const oldAssignerNames = await convertAssignerIdsToNames(existingTask.eva_assigners_id);
-                    const newAssignerNames = await convertAssignerIdsToNames(assignersIds);
+                    const oldAssignerNames = convertAssignerIdsToNames(existingTask.eva_assigners_id, storedUsers);
+                    const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
 
                     changeDetails += `\n  - Assinantes: de "${oldAssignerNames}" para "${newAssignerNames}"`;
                     existingTask.eva_assigners_id = assignersIds;
@@ -119,7 +119,7 @@ export async function updateOrCreateTasks(tasksFromEVA,
                     eva_description: removeUrls(taskEva.description)
                 })
                 tasksBatch.push(newTask); // Adiciona a promessa de salvamento ao array
-                const newAssignerNames = await convertAssignerIdsToNames(assignersIds);
+                const newAssignerNames =  convertAssignerIdsToNames(assignersIds, storedUsers);
                 changesLog.push(`Nova tarefa adicionada: ${taskEva.subject}\n  - Assinantes: ${newAssignerNames}\n  - Descrição: ${description}`); // Registra o novo projeto no log de mudanças
             }
         }

@@ -2,7 +2,7 @@
 import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
 import { sendLongMessage } from '../services/ServiceMensagens.js';
 import { addOrUpdateTasks } from '../services/ServiceTaskByProject.js';
-import { addUsersToBack4App } from '../services/ServiceUsuario.js';
+import { addOrUpdateUsersToDatabase } from '../services/ServiceUsuario.js';
 import { updateData } from './ranking.js';
 
 
