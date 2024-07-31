@@ -7,10 +7,12 @@ import {extractNegotiationModel} from "./ServiceDescription.js";
  * @returns
  * @param taskTitle
  * @param taskDescription
+ * @param taskAssigners
  * @param username
+ * @param storedUsers
  * @param interaction
  */
-export async function calcularPontosEVA(taskTitle, taskDescription, username, interaction) {
+export async function calcularPontosEVA(taskTitle, taskDescription, taskAssigners, username, storedUsers, interaction) {
     // await interaction.deferReply();
     const negotiateTitleRegex = /\[(G|I|N):\s*(\d+)\s*x\s*(\d+(?:\.\d+)?)\]/i;
     const match = taskTitle.match(negotiateTitleRegex);
@@ -26,7 +28,7 @@ export async function calcularPontosEVA(taskTitle, taskDescription, username, in
                 try {
                     const negotiationModel = extractNegotiationModel(taskDescription);
                     if (negotiationModel !== '') {
-                        if (await validateNegotiation(taskTitle)) {
+                        if (await validateNegotiation(taskTitle, taskDescription, taskAssigners, storedUsers)) {
                             const points = getNegotiationsPointsForUser(negotiationModel, username);
                             consoleOccinho?.log("points = ", points);
                             return points; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA 
@@ -68,7 +70,7 @@ export function getNegotiationsPointsForUser(model, evaUserName) {
         }
     }
 
-    throw Error(`Utilizando o model = ${model} e com o nome de usuário ${evaUserName} não foi possível atribuir pontos de negociação`)
+    return 0
 }
 
 export function getTaskTotalPoints(taskTitle) {
@@ -89,17 +91,17 @@ export function getTaskTotalPoints(taskTitle) {
  * @param taskTitle
  * @param taskDescription
  * @param taskAssigners
+ * @param storedUsers
  * @returns {Promise<boolean>}
  */
-export async function validateNegotiation(taskTitle, taskDescription, taskAssigners) {
+export async function validateNegotiation(taskTitle, taskDescription, taskAssigners, storedUsers) {
     const taskTotalpoints = getTaskTotalPoints(taskTitle);
-    const users = await User.findAll();
     const usersAssigners = [];
     const usersTotalPoints = [];
-    const negotiationModel = extractNegotiationModel(taskTitle);
+    const negotiationModel = extractNegotiationModel(taskDescription);
     for (let idUser of taskAssigners) {
-        const userName = users.find((user) => user.id === idUser);
-        usersAssigners.push(userName.nome);
+        const userName = storedUsers.find((user) => user.eva_id == idUser);
+        usersAssigners.push(userName.eva_name);
     }
     for (let user of usersAssigners) {
         const userNegotiatePoints = getNegotiationsPointsForUser(negotiationModel, user);
@@ -107,7 +109,7 @@ export async function validateNegotiation(taskTitle, taskDescription, taskAssign
     }
     const totalNegotiatePoints = usersTotalPoints.reduce((totalPoints, userPoint) => totalPoints + userPoint, 0);
 
-    return totalNegotiatePoints <= taskTotalpoints;
+    return totalNegotiatePoints == taskTotalpoints;
 }
 
 /**

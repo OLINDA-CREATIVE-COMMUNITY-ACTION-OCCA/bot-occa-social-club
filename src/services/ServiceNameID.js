@@ -8,13 +8,12 @@ import {where} from "sequelize";
  * @param {*} storedUsers
  * @returns o nome do usuário ou o ID se o nome não for encontrado
  */
-export async function convertAssignerIdsToNames(assigners) {
-    const assignerIds = typeof assigners === 'string' ? assigners.split(', ') : assigners;
+export async function convertAssignerIdsToNames(assigners, storedUsers) {
     const assignersNames = []
     if(assigners) {
         for (const assignerId of assigners) {
             // isso é muito custoso em questão de tempo e precisa ser removido
-            const user = await User.findOne({ where: { eva_id: assignerId } });
+            const user = storedUsers.find(user => user.eva_id == assignerId);
             assignersNames.push(user ? user.eva_name : `ID: ${assignerId}`);
         }
     }
