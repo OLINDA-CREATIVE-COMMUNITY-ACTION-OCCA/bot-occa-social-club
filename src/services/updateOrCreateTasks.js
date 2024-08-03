@@ -43,7 +43,8 @@ export async function updateOrCreateTasks(tasksFromEVA,
             });
 
             const taskDetail = taskDetailResponse.data; // Detalhes da tarefa, incluindo a descrição
-            const fullDescription = taskDetail.description; // Obtém a descrição completa da tarefa
+            // remove a url da tarefa que veio do eva antes de 
+            const fullDescription = removeUrls(taskDetail.description);
 
 
             // Extrair a parte relevante da descrição
