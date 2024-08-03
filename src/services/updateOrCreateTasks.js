@@ -48,7 +48,7 @@ export async function updateOrCreateTasks(tasksFromEVA,
 
 
             // Extrair a parte relevante da descrição
-            const descriptionMatch = fullDescription.match(regexDescriptionModel);
+            const descriptionMatch = fullDescription ? fullDescription.match(regexDescriptionModel) : null
             const description = descriptionMatch ? descriptionMatch[0] : 'essa tarefa não tem modelo de negociação'; // Se não houver correspondência, define mensagem padrão
             const storedUsersMap = new Map(storedUsers.map(user => [user.id.toString(), user]));
 
