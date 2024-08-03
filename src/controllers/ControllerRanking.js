@@ -22,7 +22,7 @@ export async function getRankingWithSprints(interaction) {
 
             for (const task of storedTasks) {
                 // consoleOccinho?.log("assigners ids", task.eva_assigners_id)
-                if (task.eva_assigners_id?.includes(user.eva_id.toString()) && task.eva_status_name === 'Concluído') {
+                if (task.eva_assigners_id?.includes(user.eva_id) && task.eva_status_name === 'Concluído') {
                     const pontosEVA = await calcularPontosEVA(
                         task.eva_title,
                         task.eva_description,
