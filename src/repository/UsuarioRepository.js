@@ -15,10 +15,9 @@ export async function userExistsAndUpdate(user, storedUsers) {
         if (existingUser.eva_name !== user.full_name && user.full_name != null) {
             existingUser.eva_name = user.full_name;
             await existingUser.save();
+            return `Nome do novo usuário ${existingUser.eva_name} atualizado`;
         }
-        return `Nome do novo usuário ${existingUser.eva_name} atualizado`; // Retorna null se o nome já estiver correto
     } else { // Se o usuário não existir
-
         const newUser = await User.create({
             eva_name: user.full_name,
             eva_id: user.id

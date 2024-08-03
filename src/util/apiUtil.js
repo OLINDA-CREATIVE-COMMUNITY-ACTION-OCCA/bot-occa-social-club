@@ -9,7 +9,7 @@ import dotenv from 'dotenv'; // Carrega as variáveis de ambiente do arquivo .en
 export async function getUsersFromAPI(authTokenEva) {
     dotenv.config()
     try {
-        const response = await axios.get(`${process.env.URL_EVA}users`, {
+        const response = await axios.get(`https://apiprodution.evastrategy.com/api/v1/users`, {
             headers: {
                 'Authorization': `Bearer  ${authTokenEva}` // Define o token de autorização no cabeçalho da requisição
             }
