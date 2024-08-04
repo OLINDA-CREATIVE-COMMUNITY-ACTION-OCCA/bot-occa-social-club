@@ -23,7 +23,7 @@ export async function addOrUpdateUsersToDatabase(authTokenEva) {
         consoleOccinho?.time("executar as verificacoes e atualizacoes de usuarios em paralelo")
         const results = await Promise.all(userPromises); // Executa todas as operações de verificação/atualização em paralelo
         consoleOccinho?.timeEnd("executar as verificacoes e atualizacoes de usuarios em paralelo")
-        return results.filter(result => result !== null); // Retorna resultados que não sejam nulos (indicando sucesso na atualização)
+        return results.filter(result => result != null); // Retorna resultados que não sejam nulos (indicando sucesso na atualização)
     } catch (error) {
         console.error('(Service User) Erro ao adicionar ou atualizar usuários:', error); // Registra erros ocorridos durante o processo
         throw error; // Lança o erro para tratamento externo

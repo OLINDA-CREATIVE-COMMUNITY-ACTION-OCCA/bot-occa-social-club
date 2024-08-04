@@ -36,7 +36,7 @@ export async function calcularPontosEVA(taskTitle, taskDescription, taskAssigner
                             await interaction.followUp("ERRO! A divisão de pontos está maior que a pontuação total da tarefa.")
                         }
                     } else {
-                        await interaction.followUp(`A Tarefa: ${taskTitle} ainda não foi negociada!!!`);
+                        console.log(`A Tarefa: ${taskTitle} ainda não foi negociada!!!`);
                     }
                 } catch (error) {
                     console.error(error)

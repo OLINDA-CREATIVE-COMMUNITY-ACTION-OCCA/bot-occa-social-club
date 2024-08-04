@@ -24,4 +24,5 @@ export async function userExistsAndUpdate(user, storedUsers) {
         })
         return `Usuário ${newUser.eva_name} adicionado com sucesso.`; // Retorna mensagem de sucesso
     }
+    return null
 }

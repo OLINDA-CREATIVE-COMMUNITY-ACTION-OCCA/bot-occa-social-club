@@ -3,15 +3,18 @@ import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
 import { sendLongMessage } from '../services/ServiceMensagens.js';
 import { addOrUpdateTasks} from '../services/ServiceTaskByProject.js';
 import { addOrUpdateUsersToDatabase } from '../services/ServiceUsuario.js';
+import consoleOccinho from "../util/ConsoleOccinho.js";
 
 
-export async function updateData(authTokenEva) {
+export async function updateDatabase(authTokenEva) {
     try {
         // Execute as funções de atualização em paralelo
+        consoleOccinho.time("updateDatabase");
         const [newUsers, changes] = await Promise.all([
             addOrUpdateUsersToDatabase(authTokenEva),
             addOrUpdateTasks(authTokenEva)
         ]);
+        consoleOccinho.timeEnd("updateDatabase");
         let responseMessage = '';
 
         if (newUsers.length > 0) {
@@ -37,7 +40,7 @@ export async function handleRankingInteraction(interaction, authTokenEva) {
     await interaction.deferReply();
     try {
         // Atualiza os dados antes de obter o ranking
-        const updateMessage = await updateData(authTokenEva);
+        const updateMessage = await updateDatabase(authTokenEva);
         // Obtém o ranking com sprints
         const ranking = await getRankingWithSprints(interaction);
 

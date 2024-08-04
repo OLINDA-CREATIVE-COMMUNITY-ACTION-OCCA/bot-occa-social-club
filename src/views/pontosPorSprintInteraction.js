@@ -3,7 +3,7 @@ import { getRankingWithSprints } from '../controllers/ControllerRanking.js';
 import { sendLongMessage } from '../services/ServiceMensagens.js';
 import { addOrUpdateTasks } from '../services/ServiceTaskByProject.js';
 import { addOrUpdateUsersToDatabase } from '../services/ServiceUsuario.js';
-import { updateData } from './ranking.js';
+import { updateDatabase } from './ranking.js';
 
 
 // Função assíncrona para lidar com a interação de pontos por sprint
@@ -12,7 +12,7 @@ export async function handlePointsBySprintInteraction(interaction, authTokenEva)
     await interaction.deferReply();
     try {
         // Atualiza os dados antes de obter os pontos por sprint
-        const updateMessage = await updateData(authTokenEva);
+        const updateMessage = await updateDatabase(authTokenEva);
         // Obtém o ranking com sprints
         const rankingComSprints = await getRankingWithSprints(interaction);
 
