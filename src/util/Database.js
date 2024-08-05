@@ -9,14 +9,8 @@ export const sequelize = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: 'localhost',
-        dialect: 'mysql',
-        dialectOptions: {
-            charset: 'utf8mb4'
-        },
-        define: {
-            charset: 'utf8mb4',
-            collate: 'utf8mb4_unicode_ci'
-        }
+        dialect: 'sqlite',
+        storage: '../database.sqlite',
     }
 );
 /**

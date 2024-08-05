@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8815924e-881a-4dc5-886e-164bea8db783" name="Changes" comment="fix: don't update users that already are in database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Database.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Database.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +55,7 @@
     "Node.js.index.js.executor": "Run",
     "Node.js.updateOrCreateTasks.js.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/use-mysql",
+    "git-widget-placeholder": "feature/use-sqlite",
     "javascript.nodejs.core.library.configured.version": "20.12.1",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "node.js.detected.package.eslint": "true",
@@ -174,26 +176,22 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
           <line>64</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
           <line>109</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/services/ServicePontos.js</url>
           <line>99</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <condition expression="existingTask.eva_assigners_id == null" language="JavaScript" />
           <url>file://$PROJECT_DIR$/src/services/updateOrCreateTasks.js</url>
           <line>79</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
