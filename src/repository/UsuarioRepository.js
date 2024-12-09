@@ -1,5 +1,10 @@
 const Parse = require('parse/node'); // Importa o SDK do Parse
 
+/**
+ * Atualiza o Back4App com as informações dos novos usuários
+ * @param user
+ * @returns {Promise<null|string>}
+ */
 async function userExistsAndUpdate(user) {
     // Define a classe 'usuario' no Parse
     const UserClass = Parse.Object.extend('usuario');

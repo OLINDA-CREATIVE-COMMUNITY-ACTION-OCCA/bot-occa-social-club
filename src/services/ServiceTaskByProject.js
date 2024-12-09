@@ -1,18 +1,19 @@
-// projectService.js
-
 // Importações de módulos e configuração inicial
 const axios = require('axios'); // Para requisições HTTP
 const Parse = require('parse/node'); // Para interação com o Parse Server
 const { getStoredTasksByProjects, getStoredSprints, fetchStoredUsers } = require('../repository/projetotRepository'); // Funções de acesso aos dados armazenados
 const { convertAssignerIdsToNames, getAssignerNames, convertAssignerNameToId } = require('../services/ServiceNameID'); // Funções de conversão de IDs para nomes e vice-versa
 const { sprintNameMap, statusMap } = require('../services/ServiceSprint'); // Mapeamentos de nomes de sprint e status
+const { consoleOccinho } = require('../util/ConsoleOccinho')
 require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
+
+const logPath = "ServiceTaskByProject "
 
 /**
  * Função assíncrona para adicionar ou atualizar projetos no Back4App
  * @returns log de alteração realizada
  */
-async function addOrUpdateTaskByProjectsToBack4App() {
+async function addOrUpdateTaskByProjectsToBack4App(authTokenEva) {
     /**
      * Array que registra atualizações de nome dos usuários, dos status de uma tarefa ou dos assinantes da tarefa
      * @type {*[string]}
@@ -21,15 +22,16 @@ async function addOrUpdateTaskByProjectsToBack4App() {
 
     try {
         // Obtenção de sprints e projetos armazenados e usuários do Parse
-        const storedSprints = await getStoredSprints();
-        const tasksByProjects = await getStoredTasksByProjects();
-        const storedUsers = await fetchStoredUsers();
+        const [storedSprints, tasksByProjects, storedUsers] = await Promise.all([
+            getStoredSprints(),
+            getStoredTasksByProjects(),
+            fetchStoredUsers()
+        ]);
 
+        consoleOccinho?.log(logPath, `toke de eva é ${authTokenEva}`)
         // Requisição para obter os marcos (milestones) da API externa
         const milestonesResponse = await axios.get('https://apiproduction.evastrategy.com/api/v1/milestones', {
-            headers: {
-                'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` // Token de autorização da API
-            }
+            headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
         });
 
         const milestones = milestonesResponse.data; // Array de marcos recebidos da API
@@ -37,10 +39,9 @@ async function addOrUpdateTaskByProjectsToBack4App() {
         // Iteração sobre cada marco recebido da API
         for (const milestone of milestones) {
             const sprintName = sprintNameMap[milestone.slug] || milestone.name; // Nome da sprint mapeado ou nome padrão do marco
+
             const tasksResponse = await axios.get(`https://apiproduction.evastrategy.com/api/v1/tasks?milestone=${milestone.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${process.env.API_AUTHORIZATION_TOKEN}` // Token de autorização da API
-                }
+                headers: { 'Authorization': `Bearer ${authTokenEva}` } // Token de autorização da API
             });
 
             const tasks = tasksResponse.data; // Array de projetos recebidos da API
@@ -48,6 +49,8 @@ async function addOrUpdateTaskByProjectsToBack4App() {
             if (!Array.isArray(tasks)) {
                 throw new Error('A resposta da API não é um array'); // Lança um erro se a resposta não for um array
             }
+
+            const tasksBatch = []; // Array para registrar promessas de salvamento de projetos
 
             // Iteração sobre cada projeto recebido da API
             for (const task of tasks) {
@@ -59,16 +62,11 @@ async function addOrUpdateTaskByProjectsToBack4App() {
                 // Obtém nomes dos assinantes e IDs dos assinantes
                 const assignersNames = getAssignerNames(task.assigners, storedUsers);
                 const assignersIds = convertAssignerNameToId(assignersNames.split(', '), storedUsers);
-                const existingTaskByProject = tasksByProjects.find(taskInDataBase =>
-                    taskInDataBase.titulo === task.subject
-                ); // Busca por projeto existente pelo título
+                const existingTaskByProject = tasksByProjects.find(taskInDataBase => taskInDataBase.titulo === task.subject);
 
-                // Verifica se a tarefa já existe no armazenamento
                 if (existingTaskByProject) {
                     let changed = false; // Flag para indicar se houve alterações
                     let changeDetails = `Projeto ${task.subject} atualizado:`; // Detalhes das alterações realizadas
-
-                    const existingAssignerIds = existingTaskByProject.assinantes; // IDs de assinantes existentes no projeto
 
                     // Verifica e atualiza o status do projeto se necessário
                     if (existingTaskByProject.status !== statusMap[task.status]) {
@@ -85,8 +83,8 @@ async function addOrUpdateTaskByProjectsToBack4App() {
                     }
 
                     // Verifica e atualiza os assinantes do projeto se necessário
-                    if (existingAssignerIds !== assignersIds) {
-                        const oldAssignerNames = convertAssignerIdsToNames(existingAssignerIds, storedUsers);
+                    if (existingTaskByProject.assinantes !== assignersIds) {
+                        const oldAssignerNames = convertAssignerIdsToNames(existingTaskByProject.assinantes, storedUsers);
                         const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
 
                         changeDetails += `\n  - Assinantes: de "${oldAssignerNames}" para "${newAssignerNames}"`;
@@ -102,11 +100,11 @@ async function addOrUpdateTaskByProjectsToBack4App() {
                         projectObject.set('status', existingTaskByProject.status);
                         projectObject.set('sprint', existingTaskByProject.sprint);
                         projectObject.set('assinantes', assignersIds);
-                        await projectObject.save(); // Salva as alterações no projeto
+                        tasksBatch.push(projectObject.save()); // Adiciona a promessa de salvamento ao array
                         changesLog.push(changeDetails); // Registra as alterações no log de mudanças
                     }
                 } else {
-                    // Se o tarefa realacionada ao projeto não existir, cria um novo no Parse
+                    // Se a tarefa relacionada ao projeto não existir, cria um novo no Parse
                     const TaskByProjectClass = Parse.Object.extend('projeto');
                     const newTaskByProject = new TaskByProjectClass();
 
@@ -114,12 +112,14 @@ async function addOrUpdateTaskByProjectsToBack4App() {
                     newTaskByProject.set('status', statusMap[task.status]);
                     newTaskByProject.set('sprint', sprintName);
                     newTaskByProject.set('assinantes', assignersIds);
-                    await newTaskByProject.save(); // Salva o novo projeto no Parse
+                    tasksBatch.push(newTaskByProject.save()); // Adiciona a promessa de salvamento ao array
 
                     const newAssignerNames = convertAssignerIdsToNames(assignersIds, storedUsers);
                     changesLog.push(`Novo projeto adicionado: ${task.subject}\n  - Assinantes: ${newAssignerNames}`); // Registra o novo projeto no log de mudanças
                 }
             }
+
+            await Promise.all(tasksBatch); // Aguarda todas as promessas de salvamento serem resolvidas
         }
 
         if (changesLog.length === 0) {
@@ -133,4 +133,4 @@ async function addOrUpdateTaskByProjectsToBack4App() {
     }
 }
 
-module.exports = { addOrUpdateProjectsToBack4App: addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa
+module.exports = { addOrUpdateTaskByProjectsToBack4App }; // Exporta a função para utilização externa

@@ -13,11 +13,11 @@ function calcularPontosEVA(titulo) {
 
         switch (match[1].toUpperCase()) {
             case 'G':
-                return pontos * multiplicador * 1; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
+                return pontos * multiplicador; // Exemplo: Tarefa do tipo 'G' vale 8 pontos EVA
             case 'I':
-                return pontos * multiplicador * 1; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
+                return pontos * multiplicador; // Exemplo: Tarefa do tipo 'I' vale 4 pontos EVA
             case 'N':
-                return pontos * multiplicador * 1; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA
+                return pontos * multiplicador; // Exemplo: Tarefa do tipo 'N' vale 2 pontos EVA
             default:
                 return 0; // Retorna 0 pontos EVA se não houver correspondência
         }
